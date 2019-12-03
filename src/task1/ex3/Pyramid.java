@@ -1,12 +1,14 @@
+package task1.ex3;
+
 class Pyramid {
 
 	private int height;
 	private int width;
 	private int[][] pyramid;
 
-	Pyramid(int height) {
+	Pyramid(int height) throws IllegalArgumentException {
 		if (height < 1 || height > 9)
-			throw new NumberFormatException("Pyramid height must be in range 1-9.");
+			throw new IllegalArgumentException("Pyramid height must be in range 1-9.");
 
 		this.height = height;
 		this.width = height * 2 - 1;
@@ -47,7 +49,7 @@ class Pyramid {
 			pyra.fillPyramid();
 			pyra.printPyramid();
 
-		} catch (NumberFormatException e) {
+		} catch (IllegalArgumentException e) {
 			System.err.println(e.getMessage());
 		}
 
