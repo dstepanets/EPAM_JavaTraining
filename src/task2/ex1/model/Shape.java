@@ -1,0 +1,33 @@
+package task2.ex1.model;
+
+public abstract class Shape implements Drawable {
+
+	private String shapeColor;
+
+	public String getShapeColor() {
+		return shapeColor;
+	}
+	public void setShapeColor(String shapeColor) {
+		this.shapeColor = shapeColor;
+	}
+
+	public Shape(String shapeColor) {
+		this.shapeColor = shapeColor;
+	}
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() +
+				": shapeColor=" + shapeColor;
+	}
+
+	public abstract double calcArea();
+
+	public boolean validateShape() {
+		if (shapeColor == null || shapeColor.isBlank())
+			return false;
+		return true;
+	}
+
+
+}
