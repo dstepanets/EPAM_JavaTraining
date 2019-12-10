@@ -10,10 +10,7 @@ public class Rectangle extends Shape {
 		this.h = h;
 	}
 
-	@Override
-	public boolean validateShape() {
-		if (!super.validateShape())
-			return false;
+	public static boolean validateShape(double w, double h) {
 		if (w <= 0.0 || h <= 0.0)
 			return false;
 		return true;

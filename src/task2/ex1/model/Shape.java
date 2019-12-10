@@ -23,11 +23,4 @@ public abstract class Shape implements Drawable {
 
 	public abstract double calcArea();
 
-	public boolean validateShape() {
-		if (shapeColor == null || shapeColor.isBlank())
-			return false;
-		return true;
-	}
-
-
 }

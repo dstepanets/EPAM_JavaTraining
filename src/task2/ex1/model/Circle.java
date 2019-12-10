@@ -9,10 +9,7 @@ public class Circle extends Shape {
 		this.radius = radius;
 	}
 
-	@Override
-	public boolean validateShape() {
-		if (!super.validateShape())
-			return false;
+	public static boolean validateShape(double radius) {
 		if (radius <= 0.0)
 			return false;
 		return true;

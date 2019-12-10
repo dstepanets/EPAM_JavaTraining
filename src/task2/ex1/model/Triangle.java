@@ -12,12 +12,7 @@ public class Triangle extends Shape {
 		this.c = c;
 	}
 
-	@Override
-	public boolean validateShape() {
-		if (!super.validateShape())
-			return false;
-		if (a <= 0.0 || b <= 0.0 || c <= 0.0)
-			return false;
+	public static boolean validateShape(double a, double b, double c) {
 		if ( (a+b)<c || (b+c)<a || (c+a)<b )
 			return false;
 		return true;

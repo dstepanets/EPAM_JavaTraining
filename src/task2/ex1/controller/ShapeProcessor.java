@@ -25,26 +25,28 @@ public class ShapeProcessor {
 			Shape s = null;
 			switch (type) {
 				case 0:
+					double w, h;
 					do {
-						s = new Rectangle(colors[rand.nextInt(colors.length)],
-								rand.nextInt(100),
-								rand.nextInt(100));
-					} while (!s.validateShape());
-
+						w = rand.nextInt(100);
+						h = rand.nextInt(100);
+					} while (!Rectangle.validateShape(w, h));
+					s = new Rectangle(colors[rand.nextInt(colors.length)], w, h);
 					break;
 				case 1:
+					double a, b, c;
 					do {
-						s = new Triangle(colors[rand.nextInt(colors.length)],
-											rand.nextInt(100),
-											rand.nextInt(100),
-											rand.nextInt(100));
-					} while (!s.validateShape());
+						a = rand.nextInt(100);
+						b = rand.nextInt(100);
+						c = rand.nextInt(100);
+					} while (!Triangle.validateShape(a, b, c));
+					s = new Triangle(colors[rand.nextInt(colors.length)], a, b, c);
 					break;
 				case 2:
+					double radius;
 					do {
-						s = new Circle(colors[rand.nextInt(colors.length)],
-											rand.nextInt(100));
-					} while (!s.validateShape());
+						radius = rand.nextInt(100);
+					} while (!Circle.validateShape(radius));
+					s = new Circle(colors[rand.nextInt(colors.length)], radius);
 					break;
 			}
 			array[i] =  s;
