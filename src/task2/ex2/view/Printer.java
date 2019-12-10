@@ -11,7 +11,7 @@ public class Printer {
 		}
 	}
 
-	public static void printMenue() {
+	public static void printMenu() {
 		System.out.println("\nChoose an option (type number and press Enter):");
 		System.out.println("1. Get books by author");
 		System.out.println("2. Get books by publisher");

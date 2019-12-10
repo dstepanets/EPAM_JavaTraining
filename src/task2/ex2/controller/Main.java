@@ -11,7 +11,7 @@ public class Main {
 		Menu menu = new Menu(manager, books);
 
 		Printer.printBooksArray(books);
-		Printer.printMenue();
+		Printer.printMenu();
 
 		while (true) {
 			menu.makeChoice();
