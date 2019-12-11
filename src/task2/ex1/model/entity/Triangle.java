@@ -1,4 +1,4 @@
-package task2.ex1.model;
+package task2.ex1.model.entity;
 
 public class Triangle extends Shape {
 	private double a;
@@ -18,11 +18,6 @@ public class Triangle extends Shape {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return super.toString() + ", a=" + a + ", b=" + b + ", c=" + c;
-	}
-
 //	Heron's formula gives the area of a triangle when the length of all three sides are known
 	@Override
 	public double calcArea() {
@@ -32,8 +27,8 @@ public class Triangle extends Shape {
 	}
 
 	@Override
-	public String draw() {
-		return String.format("%s; area=%.2f", this, this.calcArea());
+	public String toString() {
+		return super.toString() + ", a=" + a + ", b=" + b + ", c=" + c;
 	}
 
 }

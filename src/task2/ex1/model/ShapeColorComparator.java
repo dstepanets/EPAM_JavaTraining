@@ -1,5 +1,7 @@
 package task2.ex1.model;
 
+import task2.ex1.model.entity.Shape;
+
 import java.util.Comparator;
 
 public class ShapeColorComparator implements Comparator {

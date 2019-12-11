@@ -1,10 +1,12 @@
 package task2.ex1.controller;
 
-import task2.ex1.model.Circle;
-import task2.ex1.model.Rectangle;
-import task2.ex1.model.Shape;
-import task2.ex1.model.Triangle;
+import task2.ex1.model.entity.Circle;
+import task2.ex1.model.entity.Rectangle;
+import task2.ex1.model.entity.Shape;
+import task2.ex1.model.entity.Triangle;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Random;
 
 public class ShapeProcessor {
@@ -69,6 +71,28 @@ public class ShapeProcessor {
 			}
 		}
 		return area;
+	}
+
+	public Shape[] sortShapes(Comparator comparator) {
+		Shape[] newArray = Arrays.copyOf(array, array.length);
+		Arrays.sort(newArray, comparator);
+		return newArray;
+	}
+
+	public Class getClassFromString(String s) {
+		Class c = null;
+		switch (s.toLowerCase()) {
+			case "rectangle":
+				c = Rectangle.class;
+				break;
+			case "triangle":
+				c = Triangle.class;
+				break;
+			case "circle":
+				c = Circle.class;
+				break;
+		}
+		return c;
 	}
 
 }

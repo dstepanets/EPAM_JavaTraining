@@ -1,7 +1,7 @@
 package task2.ex1.view;
 
 import task2.ex1.controller.ShapeProcessor;
-import task2.ex1.model.Shape;
+import task2.ex1.model.entity.Shape;
 
 public class Printer {
 
@@ -25,4 +25,9 @@ public class Printer {
 		String areaTrimmed = String.format("%.2f", processor.calcTotalAreaSpecific(shapeType));
 		System.out.println("Total area of " + shapeType.getSimpleName() + "s: " + areaTrimmed);
 	}
+
+	public void printString(String s) {
+		System.out.println(s);
+	}
+
 }

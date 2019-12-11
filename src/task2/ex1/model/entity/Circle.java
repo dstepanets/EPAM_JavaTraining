@@ -1,4 +1,4 @@
-package task2.ex1.model;
+package task2.ex1.model.entity;
 
 public class Circle extends Shape {
 
@@ -16,18 +16,13 @@ public class Circle extends Shape {
 	}
 
 	@Override
-	public String toString() {
-		return super.toString() + ", radius=" + radius;
-	}
-
-	@Override
 	public double calcArea() {
 		return Math.PI * radius * radius;
 	}
 
 	@Override
-	public String draw() {
-		return String.format("%s; area=%.2f", this, this.calcArea());
+	public String toString() {
+		return super.toString() + ", radius=" + radius;
 	}
 
 }

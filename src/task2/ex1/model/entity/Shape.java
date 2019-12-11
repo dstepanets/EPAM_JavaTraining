@@ -1,4 +1,6 @@
-package task2.ex1.model;
+package task2.ex1.model.entity;
+
+import task2.ex1.model.Drawable;
 
 public abstract class Shape implements Drawable {
 
@@ -22,5 +24,9 @@ public abstract class Shape implements Drawable {
 	}
 
 	public abstract double calcArea();
+
+	public String draw() {
+		return String.format("%s; area=%.2f", this, this.calcArea());
+	}
 
 }

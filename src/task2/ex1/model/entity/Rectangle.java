@@ -1,4 +1,4 @@
-package task2.ex1.model;
+package task2.ex1.model.entity;
 
 public class Rectangle extends Shape {
 	private double w;
@@ -17,17 +17,13 @@ public class Rectangle extends Shape {
 	}
 
 	@Override
-	public String toString() {
-		return super.toString() + ", w=" + w + ", h=" + h;
-	}
-
-	@Override
 	public double calcArea() {
 		return w * h;
 	}
 
 	@Override
-	public String draw() {
-		return String.format("%s; area=%.2f", this, this.calcArea());
+	public String toString() {
+		return super.toString() + ", w=" + w + ", h=" + h;
 	}
+
 }

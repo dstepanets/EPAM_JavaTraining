@@ -1,10 +1,11 @@
 package task2.ex1.controller;
 
 import task2.ex1.model.*;
+import task2.ex1.model.entity.Shape;
+import task2.ex1.view.InputData;
 import task2.ex1.view.Printer;
 
-import java.util.Arrays;
-
+import java.util.Comparator;
 public class Main {
 
 	public static void main(String[] args) {
@@ -15,18 +16,34 @@ public class Main {
 		processor.generateShapesArray(10);
 		printer.printShapesArray(processor.getArray());
 
-		System.out.println("\tTotal Area:");
+		printer.printString("\tTotal Area:");
 		printer.printTotalArea(processor);
-		printer.printTotalAreaSpecific(processor, Rectangle.class);
-		printer.printTotalAreaSpecific(processor, Triangle.class);
-		printer.printTotalAreaSpecific(processor, Circle.class);
 
-		System.out.println("\tSort By Area:");
-		Arrays.sort(processor.getArray(), new ShapeAreaComparator());
-		printer.printShapesArray(processor.getArray());
-		System.out.println("\tSort By Color:");
-		Arrays.sort(processor.getArray(), new ShapeColorComparator());
-		printer.printShapesArray(processor.getArray());
+		printer.printString("-----------------------------------------");
+		printer.printString("Enter a shape type (rectangle / triangle / circle) :> ");
+		String type = InputData.input();
+		printer.printTotalAreaSpecific(processor, processor.getClassFromString(type));
+
+		printer.printString("-----------------------------------------");
+		printer.printString("Enter a sorting criteria (area / color) :> ");
+		String criteria = InputData.input();
+		Comparator comparator = null;
+		switch (criteria.toLowerCase()) {
+			case "area":
+				comparator = new ShapeAreaComparator();
+				break;
+			case "color":
+				comparator = new ShapeColorComparator();
+				break;
+		}
+		if (comparator != null) {
+			printer.printString("\tSort by " + criteria + ":");
+			Shape[] sorted = processor.sortShapes(comparator);
+			printer.printShapesArray(sorted);
+		} else {
+			printer.printString("Invalid criteria!");
+		}
 
 	}
+
 }
