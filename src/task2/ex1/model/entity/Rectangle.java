@@ -26,4 +26,9 @@ public class Rectangle extends Shape {
 		return super.toString() + ", w=" + w + ", h=" + h;
 	}
 
+	public static Rectangle parseShape(String data) {
+		String[] tokens = data.split("[:,]");
+		return new Rectangle(tokens[1], Double.parseDouble(tokens[2]), Double.parseDouble(tokens[3]));
+	}
+
 }

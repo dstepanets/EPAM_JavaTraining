@@ -23,10 +23,12 @@ public abstract class Shape implements Drawable {
 				": shapeColor=" + shapeColor;
 	}
 
-	public abstract double calcArea();
-
 	public String draw() {
 		return String.format("%s; area=%.2f", this, this.calcArea());
 	}
+
+	public abstract double calcArea();
+
+
 
 }
