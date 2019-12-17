@@ -1,4 +1,4 @@
-package enumDays;
+package L7_EnumDays;
 
 public enum DaysOfWeek {
 	SUNDAY,

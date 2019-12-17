@@ -1,4 +1,4 @@
-package enumDays;
+package L7_EnumDays;
 
 import java.util.Scanner;
 
