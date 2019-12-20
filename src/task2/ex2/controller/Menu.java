@@ -38,6 +38,9 @@ public class Menu {
 				booksByYear();
 				break;
 			case 4:
+				sortByAuthor();
+				break;
+			case 5:
 				sortByPublisher();
 				break;
 			case 0:
@@ -77,6 +80,12 @@ public class Menu {
 		} else {
 			Printer.printBooksArray(set.toArray());
 		}
+	}
+
+	private void sortByAuthor() {
+		System.out.println("\n\tSort by author:");
+		manager.sortByAuthor(books);
+		Printer.printBooksArray(books);
 	}
 
 	private void sortByPublisher() {

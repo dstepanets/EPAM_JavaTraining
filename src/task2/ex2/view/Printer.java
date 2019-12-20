@@ -16,7 +16,8 @@ public class Printer {
 		System.out.println("1. Get books by author");
 		System.out.println("2. Get books by publisher");
 		System.out.println("3. Get books by year of publishing");
-		System.out.println("4. Sort books by publisher");
+		System.out.println("4. Sort books by author");
+		System.out.println("5. Sort books by publisher");
 		System.out.println("0. Exit the program.");
 	}
 }

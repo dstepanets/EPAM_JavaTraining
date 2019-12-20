@@ -5,6 +5,7 @@ import task2.ex2.model.BookPublisherComparator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Random;
 
 public class BooksManager {
@@ -72,7 +73,21 @@ public class BooksManager {
 	}
 
 	void sortByPublisher(Book[] books) {
-		Arrays.sort(books, new BookPublisherComparator());
+		Arrays.sort(books, new Comparator<Book>() {
+			@Override
+			public int compare(Book b1, Book b2) {
+				return b1.getPublisher().compareTo(b2.getPublisher());
+			}
+		});
+	}
+
+	void sortByAuthor(Book[] books) {
+		Arrays.sort(books, new Comparator<Book>() {
+			@Override
+			public int compare(Book b1, Book b2) {
+				return b1.getAuthor().compareTo(b2.getAuthor());
+			}
+		});
 	}
 
 }
