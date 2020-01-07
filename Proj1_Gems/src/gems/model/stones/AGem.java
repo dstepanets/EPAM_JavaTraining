@@ -11,6 +11,17 @@ public abstract class AGem {
 	private int clarity;	// 1-100%
 	private int price;
 
+
+	@Override
+	public String toString() {
+		return variety.getName() +
+				" {color=" + color.getColorName() +
+				", weight=" + weight +
+				", clarity=" + clarity +
+				", price=" + price +
+				'}';
+	}
+
 	public Variety getVariety() {
 		return variety;
 	}
