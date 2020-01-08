@@ -16,6 +16,7 @@ public class Jeweller {
 
 	public void shop() {
 		menu.welcome();
+//		print main menu until EXIT command typed
 		while (true) {
 			if (neclace.size() > 0) {
 				menu.showNecklace(neclace, calcWeight(), calcPrice());
@@ -24,6 +25,7 @@ public class Jeweller {
 		}
 	}
 
+//	build a gem from user input
 	public void addGem() {
 		builder.setVariety(menu.chooseGem());
 		builder.setWeight(menu.chooseWeight());
@@ -31,7 +33,7 @@ public class Jeweller {
 		neclace.add(builder.getGem());
 	}
 
-	private double calcWeight() {
+	public double calcWeight() {
 		double weight = 0.0;
 		for (AGem gem : neclace) {
 			weight += gem.getWeight();
@@ -39,7 +41,7 @@ public class Jeweller {
 		return weight;
 	}
 
-	private int calcPrice() {
+	public int calcPrice() {
 		int price = 0;
 		for (AGem gem : neclace) {
 			price += gem.getPrice();
@@ -47,6 +49,7 @@ public class Jeweller {
 		return price;
 	}
 
+//	num is a natural order (starts from 1)
 	public void removeGem(int num) {
 		neclace.remove(num - 1);
 	}
@@ -55,6 +58,7 @@ public class Jeweller {
 		neclace = new ArrayList<>();
 	}
 
+//	sorts gems by price, ascending
 	public void sortNecklace() {
 		neclace.sort(new Comparator<AGem>() {
 			@Override
@@ -64,6 +68,7 @@ public class Jeweller {
 		});
 	}
 
+//	returns new list of gems with clarity in range (or empty list if none found)
 	public List<AGem> getGemsByClarity(int min, int max) {
 		List<AGem> selection = new ArrayList<>();
 		for (AGem g : neclace) {
@@ -74,7 +79,18 @@ public class Jeweller {
 		return selection;
 	}
 
+
+	/*	-	-	-	-	GETTERS / SETTERS	-	-	-	-	-	-	-	*/
+
 	public List<AGem> getNeclace() {
 		return neclace;
+	}
+
+	public void setNeclace(List<AGem> neclace) {
+		this.neclace = neclace;
+	}
+
+	public GemBuilder getBuilder() {
+		return builder;
 	}
 }

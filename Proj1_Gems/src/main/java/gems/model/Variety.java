@@ -16,6 +16,10 @@ public enum Variety {
 		this.basePrice = basePrice;
 	}
 
+	public static Variety valueOf(int index) {
+		return Variety.values()[index];
+	}
+
 	public String getName() {
 		return name;
 	}

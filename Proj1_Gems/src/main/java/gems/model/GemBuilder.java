@@ -2,6 +2,13 @@ package gems.model;
 
 import gems.model.stones.*;
 
+
+/*
+*	Builder creates a Gem of a corresponding class and assigns to
+*	fields values received from Menu class. It then calculates gem price
+* 	from those parameters.
+*/
+
 public class GemBuilder {
 
 	private AGem gem;
@@ -9,17 +16,22 @@ public class GemBuilder {
 	private Variety variety;
 	private double weight;	// carat
 	private int clarity;	// 1-100%
-	private int price;
 
 	public void setVariety(Variety v) {
 		this.variety = v;
 	}
 
 	public void setWeight(double weight) {
+		if (weight <= 0.0) {
+			throw new IllegalArgumentException();
+		}
 		this.weight = weight;
 	}
 
 	public void setClarity(int clarity) {
+		if (clarity < 1 || clarity > 100) {
+			throw new IllegalArgumentException();
+		}
 		this.clarity = clarity;
 	}
 
@@ -52,7 +64,7 @@ public class GemBuilder {
 
 	private int calcPrice() {
 		double multiplier = ((double)clarity / 4) * weight;
-		price = (int) (variety.getBasePrice() * multiplier);
+		int price = (int) (variety.getBasePrice() * multiplier);
 		return price;
 	}
 }

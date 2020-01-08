@@ -24,10 +24,12 @@ public class Menu {
 		boolean validCommand;
 		do {
 			validCommand = true;
+//			print Menu
 			for (MenuOption o : MenuOption.values()) {
 				System.out.println("\t" + o.toString() + " - " + o.getDescription());
 			}
 			String input = Input.getLine("[Type a command]\n");
+//			Check if input is a valid command
 			try {
 				MenuOption o = MenuOption.valueOf(input.toUpperCase());
 				switch (o) {
@@ -61,6 +63,10 @@ public class Menu {
 			}
 		} while (!validCommand);
 	}
+
+	/*
+	* Gem is built in 3 steps: user chooses type, weight and clarity
+	*/
 
 	public Variety chooseGem() {
 		System.out.println("Choose a beautiful gem for your necklace.");
@@ -96,6 +102,8 @@ public class Menu {
 		return clarity;
 	}
 
+//	Print the necklace, total weight of gems and the price.
+//	It goes along the main Menu
 	public void showNecklace(List<AGem> neclace, double weight, int price) {
 		System.out.println(SEPARATOR);
 		System.out.println("Such a wonderful necklace you made!");
@@ -124,6 +132,7 @@ public class Menu {
 		jeweller.removeGem(num);
 	}
 
+//	print details about gems in a given list
 	public void showGems(List<AGem> neclace) {
 		if (neclace.size() < 1) {
 			System.out.println("Nothing to display!");
@@ -136,6 +145,9 @@ public class Menu {
 		}
 	}
 
+
+//	Get min and max clarity from input. Get gems in range form jeweller.
+//	Send selection to print method
 	private void selectGemsByClarity() {
 		int len = jeweller.getNeclace().size();
 		if (len < 1) {
