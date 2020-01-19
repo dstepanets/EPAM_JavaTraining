@@ -1,14 +1,12 @@
 package bank.domain;
 
-import java.util.List;
-
 public class Account {
 	private final Integer id;
 	private final User user;
 	private final Integer money;
 
 
-	public Account(Integer id, User user, Integer money, List<Account> accounts) {
+	public Account(Integer id, User user, Integer money) {
 		this.id = id;
 		this.user = user;
 		this.money = money;
