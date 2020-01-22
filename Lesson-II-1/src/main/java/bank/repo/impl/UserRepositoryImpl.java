@@ -3,22 +3,19 @@ package bank.repo.impl;
 import bank.domain.User;
 import bank.repo.UserRepository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class UserRepositoryImpl implements UserRepository {
 
 	private final Map<Integer,User> userIdToUser = new HashMap<>();
 
 	@Override
-	public User findByEmail(String email) {
+	public Optional<User> findByEmail(String email) {
 		User u;
 		for (Map.Entry<Integer, User> entry : userIdToUser.entrySet()) {
 			u = entry.getValue();
 			if (u.getEmail().equals(email)) {
-				return u;
+				return Optional.of(u);
 			}
 		}
 		return null;
@@ -37,8 +34,8 @@ public class UserRepositoryImpl implements UserRepository {
 	}
 
 	@Override
-	public User findById(Integer id) {
-		return userIdToUser.get(id);
+	public Optional<User> findById(Integer id) {
+		return Optional.of(userIdToUser.get(id));
 	}
 
 	@Override

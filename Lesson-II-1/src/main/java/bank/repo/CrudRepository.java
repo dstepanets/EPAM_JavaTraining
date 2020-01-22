@@ -1,12 +1,13 @@
 package bank.repo;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CrudRepository <E> {
 //	create
 	void save(E entity);
 //	read
-	E findById(Integer id);
+	Optional<E> findById(Integer id);
 	List<E> findAll();
 //	update
 	void update(E entity);

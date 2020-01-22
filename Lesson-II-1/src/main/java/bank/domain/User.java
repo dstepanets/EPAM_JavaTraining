@@ -1,9 +1,8 @@
 package bank.domain;
 
-import java.util.Collections;
-import java.util.List;
+import static bank.utility.CollectionUtility.nullSafeListInit;
 
-import static java.util.Collections.*;
+import java.util.List;
 
 public class User {
 	private final Integer id;
@@ -16,7 +15,7 @@ public class User {
 		this.id = builder.id;
 		this.email = builder.email;
 		this.password = builder.password;
-		this.accounts = (builder.accounts == null) ? emptyList() : unmodifiableList(builder.accounts);
+		this.accounts = nullSafeListInit(builder.accounts);
 	}
 
 	public static Builder builder() {

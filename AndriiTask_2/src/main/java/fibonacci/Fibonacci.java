@@ -2,6 +2,8 @@ package fibonacci;
 
 public class Fibonacci {
 
+	private Fibonacci() {}
+
 	public static int findNthFibonacciIterative(int n) {
 		if (n < 0) {
 			throw new IllegalArgumentException("n can't be negative");

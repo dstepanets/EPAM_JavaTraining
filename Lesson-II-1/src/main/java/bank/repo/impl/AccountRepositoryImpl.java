@@ -3,10 +3,7 @@ package bank.repo.impl;
 import bank.domain.Account;
 import bank.repo.AccountRepository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AccountRepositoryImpl implements AccountRepository {
 
@@ -24,8 +21,8 @@ public class AccountRepositoryImpl implements AccountRepository {
 	}
 
 	@Override
-	public Account findById(Integer id) {
-		return accIdToAccount.get(id);
+	public Optional<Account> findById(Integer id) {
+		return Optional.of(accIdToAccount.get(id));
 	}
 
 	@Override
