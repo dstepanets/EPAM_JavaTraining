@@ -7,7 +7,7 @@ import java.util.*;
 
 public class UserRepositoryImpl implements UserRepository {
 
-	private final Map<Integer,User> userIdToUser = new HashMap<>();
+	private final Map<Long, User> userIdToUser = new HashMap<>();
 
 	@Override
 	public Optional<User> findByEmail(String email) {
@@ -20,7 +20,7 @@ public class UserRepositoryImpl implements UserRepository {
 	@Override
 	public void save(User user) {
 		if (user != null) {
-			Integer id = user.getId();
+			Long id = user.getId();
 			if (!userIdToUser.containsKey(id)) {
 				userIdToUser.put(id, user);
 			} else {
@@ -50,7 +50,7 @@ public class UserRepositoryImpl implements UserRepository {
 	@Override
 	public void update(User user) {
 		if (user != null) {
-			Integer id = user.getId();
+			Long id = user.getId();
 			if (userIdToUser.containsKey(id)) {
 				userIdToUser.put(id, user);
 			} else {

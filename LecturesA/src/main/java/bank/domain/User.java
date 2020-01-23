@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class User {
-	private final Integer id;
+	private final Long id;
 	private final String email;
 	private final String password;
 	private final String phone;
@@ -53,7 +53,7 @@ public class User {
 				'}';
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -76,7 +76,7 @@ public class User {
 	/*	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	*/
 
 	public static class Builder {
-		private Integer id;
+		private Long id;
 		private String email;
 		private String password;
 		private String phone;
@@ -88,7 +88,7 @@ public class User {
 			return new User(this);
 		}
 
-		public Builder setId(Integer id) {
+		public Builder setId(Long id) {
 			this.id = id;
 			return this;
 		}

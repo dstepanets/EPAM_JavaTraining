@@ -15,19 +15,23 @@ public class UserValidator implements Validator<User> {
 	@Override
 	public void validate(User user) {
 		if (user == null) {
-			throw new ValidateException("");
+			throw new ValidateException("User not found");
 		}
 		validateEmail(user);
 		validatePassword(user);
-		validateString(TELEPHONE_PATTERN, user, User::getPhone, "Phone number do not match the pattern");
+		validatePassword(user);
 	}
 
-	private static void validateEmail(User user){
-		validateString(EMAIL_PATTERN, user, User::getEmail, "Email do not match the pattern");
+	private static void validateEmail(User user) {
+		validateString(EMAIL_PATTERN, user, User::getEmail, "Email doesn't match the pattern");
 	}
 
 	private static void validatePassword(User user){
-		validateString(PASSWORD_PATTERN, user, User::getPassword, "Password do not match the pattern");
+		validateString(PASSWORD_PATTERN, user, User::getPassword, "Password doesn't match the pattern");
+	}
+
+	private static void validatePhone(User user) {
+		validateString(TELEPHONE_PATTERN, user, User::getPhone, "Phone number doesn't match the pattern");
 	}
 
 	private static void validateString(Pattern pattern, User user, Function<User, String> function,

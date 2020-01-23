@@ -6,9 +6,12 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
-import java.util.Comparator;
 
 public class PasswordEncryptor {
+
+	private static final String ALGORITHM = "PBKDF2WithHmacSHA1";
+	private static final int ITERATION_COUNT = 50_000;
+	private static final int KEY_LENGTH = 128;
 
 	public String encrypt(String password) {
 //		salt - a random sequence that is generated for each new hash.
@@ -20,8 +23,8 @@ public class PasswordEncryptor {
 //		effectively the strength parameter. It indicates how many iterations
 //		that this algorithm run for, increasing the time it takes to produce the hash.
 		try {
-			KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
-			SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+			KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, ITERATION_COUNT, KEY_LENGTH);
+			SecretKeyFactory factory = SecretKeyFactory.getInstance(ALGORITHM);
 
 			byte[] hash = factory.generateSecret(spec).getEncoded();
 			return new String(hash);
