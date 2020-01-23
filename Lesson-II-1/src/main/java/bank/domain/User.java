@@ -3,11 +3,13 @@ package bank.domain;
 import static bank.utility.CollectionUtility.nullSafeListInit;
 
 import java.util.List;
+import java.util.Objects;
 
 public class User {
 	private final Integer id;
 	private final String email;
 	private final String password;
+	private final String phone;
 	private final List<Account> accounts;
 
 
@@ -15,6 +17,7 @@ public class User {
 		this.id = builder.id;
 		this.email = builder.email;
 		this.password = builder.password;
+		this.phone = builder.phone;
 		this.accounts = nullSafeListInit(builder.accounts);
 	}
 
@@ -26,22 +29,17 @@ public class User {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-
 		User user = (User) o;
-
-		if (!id.equals(user.id)) return false;
-		if (!email.equals(user.email)) return false;
-		if (!password.equals(user.password)) return false;
-		return accounts.equals(user.accounts);
+		return id.equals(user.id) &&
+				email.equals(user.email) &&
+				password.equals(user.password) &&
+				Objects.equals(phone, user.phone) &&
+				Objects.equals(accounts, user.accounts);
 	}
 
 	@Override
 	public int hashCode() {
-		int result = id.hashCode();
-		result = 31 * result + email.hashCode();
-		result = 31 * result + password.hashCode();
-		result = 31 * result + accounts.hashCode();
-		return result;
+		return Objects.hash(id, email, password, phone, accounts);
 	}
 
 	@Override
@@ -49,7 +47,8 @@ public class User {
 		return "User{" +
 				"id=" + id +
 				", email='" + email + '\'' +
-				", password='" + "**********" + '\'' +
+				", password='" + password + '\'' +
+				", phone='" + phone + '\'' +
 				", accounts=" + accounts +
 				'}';
 	}
@@ -66,6 +65,10 @@ public class User {
 		return password;
 	}
 
+	public String getPhone() {
+		return phone;
+	}
+
 	public List<Account> getAccounts() {
 		return accounts;
 	}
@@ -76,6 +79,7 @@ public class User {
 		private Integer id;
 		private String email;
 		private String password;
+		private String phone;
 		private List<Account> accounts;
 
 		private Builder() {}
@@ -99,9 +103,16 @@ public class User {
 			return this;
 		}
 
+		public Builder setPhone(String phone) {
+			this.phone = phone;
+			return this;
+		}
+
 		public Builder setAccounts(List<Account> accounts) {
 			this.accounts = accounts;
 			return this;
 		}
+
+
 	}
 }

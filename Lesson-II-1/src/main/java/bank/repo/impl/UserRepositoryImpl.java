@@ -11,14 +11,10 @@ public class UserRepositoryImpl implements UserRepository {
 
 	@Override
 	public Optional<User> findByEmail(String email) {
-		User u;
-		for (Map.Entry<Integer, User> entry : userIdToUser.entrySet()) {
-			u = entry.getValue();
-			if (u.getEmail().equals(email)) {
-				return Optional.of(u);
-			}
-		}
-		return null;
+//		TODO validate email
+		return userIdToUser.values().stream()
+				.filter((User user) -> user.getEmail().equals(email))
+				.findAny();
 	}
 
 	@Override
@@ -35,12 +31,20 @@ public class UserRepositoryImpl implements UserRepository {
 
 	@Override
 	public Optional<User> findById(Integer id) {
-		return Optional.of(userIdToUser.get(id));
+		return Optional.ofNullable(userIdToUser.get(id));
+	}
+
+
+	@Override
+	public List<User> findAll(int page, int itemsPerPage) {
+		//	TODO implement pagination with streams (порядок
+		//	 може не зберігатися, згодиться). Test (e.g. page #4, 2 itemsPerPage)
+		return new ArrayList<>(userIdToUser.values());
 	}
 
 	@Override
-	public List<User> findAll() {
-		return new ArrayList<>(userIdToUser.values());
+	public long count() {
+		return userIdToUser.size();
 	}
 
 	@Override
