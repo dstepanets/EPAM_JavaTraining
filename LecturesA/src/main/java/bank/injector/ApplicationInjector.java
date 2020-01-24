@@ -9,6 +9,8 @@ import bank.service.impl.UserServiceImpl;
 import bank.service.validator.UserValidator;
 import bank.service.validator.Validator;
 
+//	TODO add controller creation. main only runs controller
+
 public class ApplicationInjector {
 
 	private static final ApplicationInjector INSTANCE = new ApplicationInjector();

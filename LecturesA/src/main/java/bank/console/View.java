@@ -14,6 +14,7 @@ package bank.console;
 import bank.ConsoleApp;
 import bank.domain.User;
 import bank.injector.ApplicationInjector;
+import bank.service.validator.ValidateException;
 
 public class View {
 
@@ -68,16 +69,15 @@ public class View {
 				.setPassword(password)
 				.setPhone(phone)
 				.build();
-		injector.getUserService().register(user);
-	}
-
-	public static void registrationOutcome(boolean success) {
-		if (success) {
+		try {
+			injector.getUserService().register(user);
 			System.out.println("User is registered. You can log in.");
-		} else {
+		} catch (ValidateException e) {
+			System.err.println(e.getMessage());
 			System.out.println("Registration failed. Try once more.");
 		}
 	}
+
 
 	public void mainMenu() {
 		System.out.println("Choose operation:");

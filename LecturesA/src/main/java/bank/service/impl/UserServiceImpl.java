@@ -28,27 +28,24 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean login(String email, String password) {
+//		TODO validate email / pass before enctypting ?
 		String encryptedPassword = passwordEncryptor.encrypt(password);
 //		TODO encryptor
 
 		return userRepository.findByEmail(email)
 				.map(User::getPassword)
-				.filter(pass -> pass.equals(password))
-//				.filter(pass -> pass.equals(encryptedPassword))
+//				.filter(pass -> pass.equals(password))
+				.filter(pass -> pass.equals(encryptedPassword))
 				.isPresent();
 	}
 
 	@Override
 	public User register(User user) {
-		try {
-			userValidator.validate(user);
-			userRepository.save(user);
-			View.registrationOutcome(true);
-		} catch (ValidateException e) {
-			System.err.println(e.getMessage());
-			View.registrationOutcome(false);
-//			e.printStackTrace();
+		userValidator.validate(user);
+		if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+			throw new RuntimeException("The user with this email was registered already");
 		}
+		userRepository.save(user);
 //		id треба дістати/ повертати?
 		System.out.println("||>>> " + user);
 		return user;
