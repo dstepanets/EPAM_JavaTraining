@@ -1,5 +1,7 @@
 package bank.domain;
 
+import bank.service.PasswordEncryptor;
+
 import static bank.utility.CollectionUtility.nullSafeListInit;
 
 import java.util.List;
@@ -8,10 +10,9 @@ import java.util.Objects;
 public class User {
 	private final Long id;
 	private final String email;
-	private final String password;
+	private String password;
 	private final String phone;
 	private final List<Account> accounts;
-
 
 	private User(Builder builder) {
 		this.id = builder.id;
@@ -19,6 +20,10 @@ public class User {
 		this.password = builder.password;
 		this.phone = builder.phone;
 		this.accounts = nullSafeListInit(builder.accounts);
+	}
+
+	public void encryptPassword(PasswordEncryptor encryptor) {
+		password = encryptor.encrypt(password);
 	}
 
 	public static Builder builder() {

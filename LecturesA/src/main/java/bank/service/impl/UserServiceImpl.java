@@ -45,6 +45,7 @@ public class UserServiceImpl implements UserService {
 		if (userRepository.findByEmail(user.getEmail()).isPresent()) {
 			throw new RuntimeException("The user with this email was registered already");
 		}
+		user.encryptPassword(passwordEncryptor);
 		userRepository.save(user);
 //		id треба дістати/ повертати?
 		System.out.println("||>>> " + user);
