@@ -91,10 +91,10 @@ public class View {
 		String phone = Input.getLine(rb.getString("enter.phone"));
 		Long id = injector.getUserRepository().count();
 		User user = User.builder()
-				.setId(id)
-				.setEmail(email)
-				.setPassword(password)
-				.setPhone(phone)
+				.withId(id)
+				.withEmail(email)
+				.withPassword(password)
+				.withPhone(phone)
 				.build();
 		try {
 			injector.getUserService().register(user);

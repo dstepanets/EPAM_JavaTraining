@@ -37,8 +37,8 @@ public class UserServiceImplTest {
 
 	private static final User USER =
 			User.builder()
-					.setEmail(USER_EMAIL)
-					.setPassword(ENCODED_PASSWORD)
+					.withEmail(USER_EMAIL)
+					.withPassword(ENCODED_PASSWORD)
 					.build();
 
 	@Mock

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class User {
-	private final Long id;
+	private final Integer id;
 	private final String email;
 	private String password;
 	private final String phone;
@@ -58,7 +58,7 @@ public class User {
 				'}';
 	}
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -81,7 +81,7 @@ public class User {
 	/*	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	*/
 
 	public static class Builder {
-		private Long id;
+		private Integer id;
 		private String email;
 		private String password;
 		private String phone;
@@ -93,27 +93,27 @@ public class User {
 			return new User(this);
 		}
 
-		public Builder setId(Long id) {
+		public Builder withId(Integer id) {
 			this.id = id;
 			return this;
 		}
 
-		public Builder setEmail(String email) {
+		public Builder withEmail(String email) {
 			this.email = email;
 			return this;
 		}
 
-		public Builder setPassword(String password) {
+		public Builder withPassword(String password) {
 			this.password = password;
 			return this;
 		}
 
-		public Builder setPhone(String phone) {
+		public Builder withPhone(String phone) {
 			this.phone = phone;
 			return this;
 		}
 
-		public Builder setAccounts(List<Account> accounts) {
+		public Builder withAccounts(List<Account> accounts) {
 			this.accounts = accounts;
 			return this;
 		}

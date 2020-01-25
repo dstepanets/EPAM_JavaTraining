@@ -8,13 +8,12 @@ public interface CrudDao<E> {
 //	create
 	void save(E entity);
 //	read
-	Optional<E> findById(Long id);
+	Optional<E> findById(Integer id);
 
 	default List<E> findAll() {
 		return Collections.emptyList();		// TODO default implementation
 	}
 
-	long count();
 //	update
 	void update(E entity);
 //	delete

@@ -1,56 +1,48 @@
 package com.bank.dao.impl;
 
-import com.bank.domain.Account;
 import com.bank.dao.AccountDao;
+import com.bank.dao.ConnectorDB;
+import com.bank.domain.Account;
 
-import java.util.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.List;
 
-public class AccountDaoImpl implements AccountDao {
+public class AccountDaoImpl extends AbstractCrudDaoImpl<Account> implements AccountDao {
+	private static final String FIND_BY_ID_QUERY = "SELECT * FROM accounts WHERE id=?";
 
-	private final Map<Integer, Account> accIdToAccount = new HashMap<>();
-
-	public void save(Account entity) {
-		if (entity != null) {
-			Integer id = entity.getId();
-			if (!accIdToAccount.containsKey(id)) {
-				accIdToAccount.put(id, entity);
-			} else {
-				throw new IllegalArgumentException("There is an account with the same ID (Use update)");
-			}
-		}
+	public AccountDaoImpl(ConnectorDB connector) {
+		super(connector, FIND_BY_ID_QUERY);
 	}
 
 	@Override
-	public Optional<Account> findById(Long id) {
-		return Optional.of(accIdToAccount.get(id));
+	public void save(Account entity) {
+
 	}
 
 	@Override
 	public List<Account> findAll(int page, int itemsPerPage) {
-		return new ArrayList<>(accIdToAccount.values());
+		return Collections.emptyList();
 	}
 
 	@Override
 	public long count() {
-		return accIdToAccount.size();
+		return 0;
 	}
 
 	@Override
 	public void update(Account entity) {
-		if (entity != null) {
-			Integer id = entity.getId();
-			if (accIdToAccount.containsKey(id)) {
-				accIdToAccount.put(id, entity);
-			} else {
-				throw new IllegalArgumentException("There is no such account yet (Use save to add a new one)");
-			}
-		}
+
 	}
 
 	@Override
 	public void deleteById(Integer id) {
-		if (id != null) {
-			accIdToAccount.remove(id);
-		}
+
+	}
+
+	protected Account mapResultSetToEntity(ResultSet resultSet) throws SQLException {
+		return new Account(resultSet.getInt("id"), null, resultSet.getInt("id"));
+
 	}
 }
