@@ -8,5 +8,5 @@ public class University {
 	private List<User> applicants;
 	private List<User> admins;
 	private List<Major> majors;
-	private List<Subject> exams;
+	private List<Exam> exams;
 }

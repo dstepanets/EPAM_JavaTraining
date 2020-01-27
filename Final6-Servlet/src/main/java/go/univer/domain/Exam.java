@@ -1,7 +1,7 @@
 package go.univer.domain;
 
-public class Subject {
-	private String title;
+public class Exam {
+	private String subject;
 	private int mark;
 
 }
