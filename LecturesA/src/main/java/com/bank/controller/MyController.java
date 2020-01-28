@@ -3,7 +3,7 @@ package com.bank.controller;
 import com.bank.console.View;
 import com.bank.injector.ApplicationInjector;
 
-public class Controller {
+public class MyController {
 
 	private final ApplicationInjector injector = ApplicationInjector.getInstance();
 	private final View view = new View();

@@ -1,13 +1,13 @@
 package com.bank;
 
-import com.bank.controller.Controller;
+import com.bank.controller.MyController;
 
-public class ConsoleApp {
+public class MyConsoleApp {
 
 	public static void main(String[] args) {
 
-		Controller controller = new Controller();
-		controller.run();
+		MyController myController = new MyController();
+		myController.run();
 
 	}
 

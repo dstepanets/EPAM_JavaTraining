@@ -11,8 +11,8 @@ package com.bank.console;
  * 3 - find by email
  */
 
-import com.bank.controller.Controller;
-import com.bank.domain.User;
+import com.bank.controller.MyController;
+import com.bank.entity.User;
 import com.bank.injector.ApplicationInjector;
 import com.bank.service.validator.ValidateException;
 
@@ -67,7 +67,7 @@ public class View {
 				register();
 				break;
 			case 3:
-				Controller.exitApp();
+				MyController.exitApp();
 				break;
 			default:
 		}
@@ -78,7 +78,7 @@ public class View {
 		String password = Input.getLine(rb.getString("enter.password"));
 		if (injector.getUserService().login(email, password)) {
 			System.out.println(rb.getString("login.success"));
-			Controller.confirmLogin();
+			MyController.confirmLogin();
 		} else {
 			System.out.println(rb.getString("login.fail"));
 		}
@@ -128,7 +128,7 @@ public class View {
 				findByEmail();
 				break;
 			case 0:
-				Controller.exitApp();
+				MyController.exitApp();
 				break;
 			default:
 		}

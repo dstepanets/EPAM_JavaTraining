@@ -1,4 +1,4 @@
-package com.bank.dao;
+package com.bank.dao.domain;
 
 public class Page {
 	private int page;
