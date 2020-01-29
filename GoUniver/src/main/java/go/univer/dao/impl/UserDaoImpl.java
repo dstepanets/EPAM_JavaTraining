@@ -26,6 +26,7 @@ public class UserDaoImpl extends AbstractCrudDaoImpl<User> implements UserDao {
 			"UPDATE users SET email='?', password='?', first_name='?', last_name='?', isadmin=? " +
 			"WHERE id=?";
 	private static final String DELETE_BY_ID_QUERY = "DELETE FROM users WHERE id=?;";
+	private static final String COUNT_TOTAL_ROWS_QUERY = "SELECT COUNT(id) AS rowcount FROM users;";
 
 	public UserDaoImpl(DBConnector connector) {
 		super(connector, FIND_BY_ID_QUERY);
@@ -85,7 +86,17 @@ public class UserDaoImpl extends AbstractCrudDaoImpl<User> implements UserDao {
 
 	@Override
 	public long count() {
-		return 0;		//	TODO impl count
+		try (final PreparedStatement preparedStatement =
+					 connector.getConnection().prepareStatement(COUNT_TOTAL_ROWS_QUERY)) {
+			try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+				if (resultSet.next()) {
+					return resultSet.getInt("rowcount");
+				}
+			}
+		} catch (SQLException e) {
+			LOGGER.error(e.getStackTrace());
+		}
+		return 0;
 	}
 
 
@@ -111,7 +122,7 @@ public class UserDaoImpl extends AbstractCrudDaoImpl<User> implements UserDao {
 	public void deleteById(Integer id) {
 		try (final PreparedStatement preparedStatement =
 					 connector.getConnection().prepareStatement(DELETE_BY_ID_QUERY)) {
-			preparedStatement.setString(1, id);
+			preparedStatement.setInt(1, id);
 			try (final ResultSet resultSet = preparedStatement.executeQuery()) {
 //				TODO log insertion
 			}
