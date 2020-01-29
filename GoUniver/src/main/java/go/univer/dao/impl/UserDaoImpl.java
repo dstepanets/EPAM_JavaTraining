@@ -25,6 +25,7 @@ public class UserDaoImpl extends AbstractCrudDaoImpl<User> implements UserDao {
 	private static final String UPDATE_USER_QUERY =
 			"UPDATE users SET email='?', password='?', first_name='?', last_name='?', isadmin=? " +
 			"WHERE id=?";
+	private static final String DELETE_BY_ID_QUERY = "DELETE FROM users WHERE id=?;";
 
 	public UserDaoImpl(DBConnector connector) {
 		super(connector, FIND_BY_ID_QUERY);
@@ -108,7 +109,15 @@ public class UserDaoImpl extends AbstractCrudDaoImpl<User> implements UserDao {
 
 	@Override
 	public void deleteById(Integer id) {
-
+		try (final PreparedStatement preparedStatement =
+					 connector.getConnection().prepareStatement(DELETE_BY_ID_QUERY)) {
+			preparedStatement.setString(1, id);
+			try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+//				TODO log insertion
+			}
+		} catch (SQLException e) {
+			LOGGER.error(e.getStackTrace());
+		}
 	}
 
 	protected User mapResultSetToEntity(ResultSet resultSet) throws SQLException {
