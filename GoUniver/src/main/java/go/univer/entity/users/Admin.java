@@ -1,4 +1,4 @@
-package go.univer.domain.users;
+package go.univer.entity.users;
 
 public class Admin extends User {
 

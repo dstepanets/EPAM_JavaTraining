@@ -9,15 +9,13 @@ import com.bank.service.impl.UserServiceImpl;
 import com.bank.service.validator.UserValidator;
 import com.bank.service.validator.Validator;
 
-//	TODO add controller creation. main only runs controller
-
 public class ApplicationInjector {
 
 	private static final ApplicationInjector INSTANCE = new ApplicationInjector();
 
 	private static final Validator<User> USER_VALIDATOR = new UserValidator();
 	private static final PasswordEncryptor PASSWORD_ENCRYPTOR = new PasswordEncryptor();
-	private static final UserDao USER_REPOSITORY = new UserCrudDaoImpl();
+	private static final UserDao USER_REPOSITORY = new UserCrudDaoImpl(null);	// TODO
 	private static final UserService USER_SERVICE = new UserServiceImpl(USER_REPOSITORY, PASSWORD_ENCRYPTOR, USER_VALIDATOR);
 
 	private ApplicationInjector() {}

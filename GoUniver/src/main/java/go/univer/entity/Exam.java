@@ -1,4 +1,4 @@
-package go.univer.domain;
+package go.univer.entity;
 
 public class Exam {
 	private String subject;

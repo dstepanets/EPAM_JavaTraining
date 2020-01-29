@@ -4,10 +4,8 @@ import java.util.List;
 
 public interface CrudPaginalDao<E> extends CrudDao<E> {
 
-		List<E> findAll(int page, int itemsPerPage);
-
 		default PaginalList<E> findAll(Page page) {
-			return null; //  TODO
+			return null; //  TODO default impl
 		}
 
 		long count();

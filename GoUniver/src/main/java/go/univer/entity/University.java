@@ -1,6 +1,6 @@
-package go.univer.domain;
+package go.univer.entity;
 
-import go.univer.domain.users.User;
+import go.univer.entity.users.User;
 
 import java.util.List;
 

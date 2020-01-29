@@ -1,4 +1,4 @@
-package go.univer.domain.users;
+package go.univer.entity.users;
 
 public class User {
 	private final Integer id;
@@ -19,9 +19,35 @@ public class User {
 		this.role = userBuilder.role;
 	}
 
-//	public static Builder builder() {
-//		return new Builder();
-//	}
+	public static UserBuilder builder() {
+		return new UserBuilder();
+	}
+
+/*	-	-	-	-	-	-	-	GETTERS -	-	-	-	-	-	-	-	-	*/
+
+	public Integer getId() {
+		return id;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public Role getRole() {
+		return role;
+	}
 
 /*	-	-	-	-	-	-	-	BUILDER -	-	-	-	-	-	-	-	-	*/
 
