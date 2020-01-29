@@ -3,4 +3,5 @@ _doc
 target
 .idea
 *.iml
+local
 
