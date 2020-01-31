@@ -1,27 +1,40 @@
 package go.univer.dao;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class DBConnector {
-	private final String url;
-	private final String user;
-	private final String password;
+	private static final Logger LOGGER = LogManager.getLogger(DBConnector.class);
+	private static final String DEFAULT_POPERTIES_FILE_PATH = "db/database";
+	private static final  HikariConfig CONFIG = new HikariConfig();
+	private static HikariDataSource dataSource;
 
-	public DBConnector(String filename) {
-		ResourceBundle resource = ResourceBundle.getBundle(filename);
-		this.url = resource.getString("db.url");
-		this.user = resource.getString("db.user");
-		this.password = resource.getString("db.password");
+	public static Connection getConnection() throws SQLException {
+		setConfigs(DEFAULT_POPERTIES_FILE_PATH);
+		return dataSource.getConnection();
 	}
 
-	public DBConnector() {
-		this("database.properties");
+	public static Connection getConnection(String propertiesFilePath) throws SQLException {
+		setConfigs(propertiesFilePath);
+		return dataSource.getConnection();
 	}
 
-	public Connection getConnection() throws SQLException {
-		return DriverManager.getConnection(url, user, password);
+	private static void setConfigs(String propertiesFilePath) {
+		ResourceBundle resource = ResourceBundle.getBundle(propertiesFilePath);
+		CONFIG.setJdbcUrl(resource.getString("db.url"));
+		CONFIG.setUsername(resource.getString("db.user"));
+		CONFIG.setPassword(resource.getString("db.password"));
+		CONFIG.addDataSourceProperty("cachePrepStmts", resource.getString("db.cachePrepStmts"));
+		CONFIG.addDataSourceProperty("prepStmtCacheSize", resource.getString("db.prepStmtCacheSize"));
+		CONFIG.addDataSourceProperty("prepStmtCacheSqlLimit", resource.getString("db.prepStmtCacheSqlLimit"));
+		dataSource = new HikariDataSource(CONFIG);
 	}
+
+	private DBConnector() { }
 }

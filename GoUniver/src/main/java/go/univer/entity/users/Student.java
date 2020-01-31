@@ -17,6 +17,8 @@ public class Student extends User {
 		this.schoolScore = builder.schoolScore;
 	}
 
+
+
 /*	-	-	-	-	-	-	-	BUILDER -	-	-	-	-	-	-	-	-	*/
 
 	public static class StudentBuilder extends UserBuilder<StudentBuilder> {
@@ -51,4 +53,20 @@ public class Student extends User {
 			return this;
 		}
 	}
+
+/*	-	-	-	-	-	-	-	BUILDER -	-	-	-	-	-	-	-	-	*/
+
+	@Override
+	public String toString() {
+		return "Student{" +
+				"examsPassed=" + examsPassed +
+				", majorsApplied=" + majorsApplied +
+				", schoolScore=" + schoolScore +
+				"} " + super.toString();
+	}
+
+
+
+
+
 }

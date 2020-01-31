@@ -1,16 +1,16 @@
 package go.univer.dao;
 
 public class Page {
-	private int page;
+	private int pageNum;
 	private int itemsPerPage;
 
-	public Page(int page, int itemsPerPage) {
-		this.page = page;
+	public Page(int pageNum, int itemsPerPage) {
+		this.pageNum = pageNum;
 		this.itemsPerPage = itemsPerPage;
 	}
 
-	public int getPage() {
-		return page;
+	public int getPageNum() {
+		return pageNum;
 	}
 
 	public int getItemsPerPage() {

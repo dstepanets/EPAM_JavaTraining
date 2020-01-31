@@ -1,5 +1,7 @@
 package go.univer.entity.users;
 
+import java.util.Objects;
+
 public class User {
 	private final Integer id;
 	private final String email;
@@ -98,12 +100,43 @@ public class User {
 			this.role = role;
 			return this;
 		}
-
-
-
 	}
 
+/*	-	-	-	-	-	-	-	BUILDER -	-	-	-	-	-	-	-	-	*/
 
+	@Override
+	public String toString() {
+		return "User{" +
+				"id=" + id +
+				", email='" + email + '\'' +
+				", password='" + password + '\'' +
+				", firstName='" + firstName + '\'' +
+				", lastName='" + lastName + '\'' +
+				", role=" + role +
+				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		User user = (User) o;
+		return id.equals(user.id) &&
+				email.equals(user.email) &&
+				password.equals(user.password) &&
+				firstName.equals(user.firstName) &&
+				lastName.equals(user.lastName) &&
+				role == user.role;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, email, password, firstName, lastName, role);
+	}
 }
 
 

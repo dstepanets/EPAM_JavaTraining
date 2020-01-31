@@ -1,5 +1,9 @@
 package go.univer.service;
 
+import go.univer.dao.impl.UserDaoImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
@@ -7,14 +11,13 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 
-import static go.univer.util.StaticTools.LOGGER;
-
 public class PasswordEncryptor {
+	private static final Logger LOGGER = LogManager.getLogger(PasswordEncryptor.class);
 
 	private static final String ALGORITHM = "PBKDF2WithHmacSHA1";
 	private static final int ITERATION_COUNT = 50_000;
 	private static final int KEY_LENGTH = 128;
-//		salt - a random sequence that is generated for each new hash.
+//	salt - a random sequence that is generated for each new hash.
 	private static final SecureRandom RANDOM = new SecureRandom();
 	private static final byte[] SALT = new byte[16];
 	static {

@@ -5,17 +5,14 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CrudDao<E> {
-	//	create
+//	create
 	void save(E entity);
-	//	read
+//	read
 	Optional<E> findById(Integer id);
-
-	default List<E> findAll() {
-		return Collections.emptyList();		// TODO default implementation
-	}
-
-	//	update
+	List<E> findAll();
+	long count();
+//	update
 	void update(E entity);
-	//	delete
+//	delete
 	void deleteById(Integer id);
 }
