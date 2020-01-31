@@ -119,5 +119,4 @@ public class UserDaoImpl extends AbstractCrudDao<User> implements UserDao {
 				.withRole(User.Role.values()[resultSet.getInt("isadmin")])
 				.build();
 	}
-
 }

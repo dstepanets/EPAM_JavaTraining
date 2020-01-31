@@ -1,7 +1,5 @@
 package go.univer.entity;
 
-import go.univer.entity.users.User;
-
 import java.util.List;
 
 public class Major {
@@ -32,5 +30,15 @@ public class Major {
 
 	public int getCapacity() {
 		return capacity;
+	}
+
+	@Override
+	public String toString() {
+		return "Major{" +
+				"id=" + id +
+				", title='" + title + '\'' +
+				", exams=" + exams +
+				", capacity=" + capacity +
+				'}';
 	}
 }

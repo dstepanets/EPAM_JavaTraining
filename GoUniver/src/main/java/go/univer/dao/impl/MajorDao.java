@@ -2,7 +2,6 @@ package go.univer.dao.impl;
 
 import go.univer.dao.DBConnector;
 import go.univer.entity.Major;
-import go.univer.entity.users.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,18 +9,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class MajorDaoImpl extends AbstractCrudDao<Major> {
-	private static final Logger LOGGER = LogManager.getLogger(MajorDaoImpl.class);
+public class MajorDao extends AbstractCrudDao<Major> {
+	private static final Logger LOGGER = LogManager.getLogger(MajorDao.class);
 
 	private static final String FIND_ALL_QUERY = "SELECT * FROM majors";
 	private static final String SAVE_MAJOR_QUERY = "INSERT INTO majors (title) VALUES ('?');";
 	private static final String UPDATE_MAJOR_QUERY = "UPDATE majors SET title='?' WHERE id=?";
 
-	public MajorDaoImpl() {
+	public MajorDao() {
 		super("majors");
 	}
 
@@ -42,12 +40,6 @@ public class MajorDaoImpl extends AbstractCrudDao<Major> {
 		return Collections.emptyList();
 	}
 
-	@Override
-	protected Major mapResultSetToEntity(ResultSet resultSet) throws SQLException {
-		final int id = resultSet.getInt(1);
-		final String title = resultSet.getString("title");
-		return new Major(id, title, Collections.EMPTY_LIST, 0);
-	}
 
 	@Override
 	public void save(Major major) {
@@ -74,5 +66,10 @@ public class MajorDaoImpl extends AbstractCrudDao<Major> {
 		}
 	}
 
-
+	@Override
+	protected Major mapResultSetToEntity(ResultSet resultSet) throws SQLException {
+		final int id = resultSet.getInt(1);
+		final String title = resultSet.getString("title");
+		return new Major(id, title, Collections.EMPTY_LIST, 0);
+	}
 }
