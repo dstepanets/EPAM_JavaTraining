@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 
 public class DBConnector {
 	private static final Logger LOGGER = LogManager.getLogger(DBConnector.class);
+
 	private static final String DEFAULT_POPERTIES_FILE_PATH = "db/database";
 	private static final  HikariConfig CONFIG = new HikariConfig();
 	private static HikariDataSource dataSource;
@@ -30,9 +31,9 @@ public class DBConnector {
 		CONFIG.setJdbcUrl(resource.getString("db.url"));
 		CONFIG.setUsername(resource.getString("db.user"));
 		CONFIG.setPassword(resource.getString("db.password"));
-		CONFIG.addDataSourceProperty("cachePrepStmts", resource.getString("db.cachePrepStmts"));
-		CONFIG.addDataSourceProperty("prepStmtCacheSize", resource.getString("db.prepStmtCacheSize"));
-		CONFIG.addDataSourceProperty("prepStmtCacheSqlLimit", resource.getString("db.prepStmtCacheSqlLimit"));
+		CONFIG.addDataSourceProperty("cachePrepStmts", resource.getString("cachePrepStmts"));
+		CONFIG.addDataSourceProperty("prepStmtCacheSize", resource.getString("prepStmtCacheSize"));
+		CONFIG.addDataSourceProperty("prepStmtCacheSqlLimit", resource.getString("prepStmtCacheSqlLimit"));
 		dataSource = new HikariDataSource(CONFIG);
 	}
 

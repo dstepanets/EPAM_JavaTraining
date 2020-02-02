@@ -1,11 +1,13 @@
 package go.univer.entity.users;
 
+import go.univer.service.PasswordEncryptor;
+
 import java.util.Objects;
 
 public class User {
 	private final Integer id;
 	private final String email;
-	private final String password;
+	private String password;
 	private final String firstName;
 	private final String lastName;
 	private final Role role;
@@ -25,30 +27,8 @@ public class User {
 		return new UserBuilder();
 	}
 
-/*	-	-	-	-	-	-	-	GETTERS -	-	-	-	-	-	-	-	-	*/
-
-	public Integer getId() {
-		return id;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public Role getRole() {
-		return role;
+	public void encryptPassword(PasswordEncryptor encryptor) {
+		password = encryptor.encrypt(password);
 	}
 
 /*	-	-	-	-	-	-	-	BUILDER -	-	-	-	-	-	-	-	-	*/
@@ -102,7 +82,31 @@ public class User {
 		}
 	}
 
-/*	-	-	-	-	-	-	-	BUILDER -	-	-	-	-	-	-	-	-	*/
+/*	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	*/
+
+	public Integer getId() {
+		return id;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public Role getRole() {
+		return role;
+	}
 
 	@Override
 	public String toString() {
