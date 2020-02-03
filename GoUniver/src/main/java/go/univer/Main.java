@@ -15,15 +15,15 @@ public class Main {
 		System.out.println(userDao.count());
 		userDao.findByEmail("sdasdas");
 
-//		loggingTest();
+		loggingTest();
 	}
 
 	private static void loggingTest() {
-		LOGGER.debug("This is a debug message");
-		LOGGER.info("This is an info message");
-		LOGGER.warn("This is a warn message");
-		LOGGER.error("This is an error message");
-		LOGGER.fatal("This is a fatal message");
+		LOGGER.debug("YOYOYOYO debug");
+		LOGGER.info("OXOXOXOXOXOX info");
+		LOGGER.warn("OLOLOLOLOLOLO warn");
+		LOGGER.error("TRATRTARTAT error");
+		LOGGER.fatal("IOIOIOIOIO fatal");
 	}
 
 

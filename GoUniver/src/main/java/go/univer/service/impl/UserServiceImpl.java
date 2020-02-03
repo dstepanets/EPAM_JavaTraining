@@ -11,6 +11,7 @@ import go.univer.service.validator.Validator;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
+
 	private static final int USERS_PER_PAGE = 5;
 
 	private final UserDao userRepository;
@@ -27,12 +28,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean login(String email, String password) {
 //		TODO validate email / pass before enctypting
-		String encryptedPassword = passwordEncryptor.encrypt(password);
-
+//		String encryptedPassword = passwordEncryptor.encrypt(password);
 		return userRepository.findByEmail(email)
 				.map(User::getPassword)
-//				.filter(pass -> pass.equals(password))
-				.filter(pass -> pass.equals(encryptedPassword))
+				.filter(pass -> pass.equals(password))
+//				.filter(pass -> pass.equals(encryptedPassword))
 				.isPresent();
 	}
 
@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
 		}
 		user.encryptPassword(passwordEncryptor);
 		userRepository.save(user);
-//		id треба дістати/ повертати?
+//		як варіант, id повертати?
 		return user;
 	}
 
