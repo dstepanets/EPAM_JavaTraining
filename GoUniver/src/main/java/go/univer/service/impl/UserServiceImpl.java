@@ -28,11 +28,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean login(String email, String password) {
 //		TODO validate email / pass before enctypting
-//		String encryptedPassword = passwordEncryptor.encrypt(password);
+		String encryptedPassword = passwordEncryptor.encrypt(password);
 		return userRepository.findByEmail(email)
 				.map(User::getPassword)
-				.filter(pass -> pass.equals(password))
-//				.filter(pass -> pass.equals(encryptedPassword))
+//				.filter(pass -> pass.equals(password))
+				.filter(pass -> pass.equals(encryptedPassword))
 				.isPresent();
 	}
 
