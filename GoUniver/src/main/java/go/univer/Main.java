@@ -1,22 +1,40 @@
 package go.univer;
 
+import go.univer.dao.UserDao;
 import go.univer.dao.impl.UserDaoImpl;
+import go.univer.entity.users.User;
+import go.univer.injector.AppInjector;
+import go.univer.service.PasswordEncryptor;
+import go.univer.service.UserService;
+import go.univer.service.impl.UserServiceImpl;
+import go.univer.service.validator.UserValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class Main {
-
 	private static final Logger LOGGER = LogManager.getLogger(Main.class);
+	private static final UserDaoImpl USER_DAO = new UserDaoImpl();
+	private static final UserService USER_SERVICE = AppInjector.getInstance().getUserService();
+	private static final UserValidator USER_VALIDATOR = new UserValidator();
+	private static final PasswordEncryptor ENCRYPTOR = new PasswordEncryptor();
 
 	public static void main(String[] args) throws SQLException {
-		UserDaoImpl userDao = new UserDaoImpl();
-		System.out.println(userDao.count());
-		userDao.findByEmail("sdasdas");
-
-		loggingTest();
+//		userDaoTest();
+//		loggingTest();
+//		validationTest();
+//		setDefaultEncyptedPasswordsForInitialUsers();
+		testLogin();
 	}
+
+	private static void userDaoTest() {
+
+		System.out.println(USER_DAO.count());
+		USER_DAO.findByEmail("sdasdas");
+	}
+
 
 	private static void loggingTest() {
 		LOGGER.debug("YOYOYOYO debug");
@@ -26,6 +44,27 @@ public class Main {
 		LOGGER.fatal("IOIOIOIOIO fatal");
 	}
 
+	private static void validationTest() {
+		User user = User.builder()
+				.withEmail("god@godmail.god")
+				.withPassword("Qwe!23")
+				.build();
+		USER_VALIDATOR.validate(user);
+	}
 
+	private static void setDefaultEncyptedPasswordsForInitialUsers() {
+		final String pass = "Qwe!23";
+		final String salt = "salt";
+
+		final String encryptedPass = ENCRYPTOR.encrypt(pass, salt);
+		USER_DAO.populateDefaultPasswords(encryptedPass);
+	}
+
+	private static void testLogin() {
+		Optional<User> user = USER_SERVICE.login("god@godmail.god", "Qwe!23");
+		System.out.println(user.isPresent());
+		user = USER_SERVICE.login("god@godmail.godxx", "Qwe!23");
+		System.out.println(user.isPresent());
+	}
 
 }

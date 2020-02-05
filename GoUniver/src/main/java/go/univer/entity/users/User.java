@@ -7,7 +7,8 @@ import java.util.Objects;
 public class User {
 	private final Integer id;
 	private final String email;
-	private String password;
+	private final String password;
+	private final String salt;
 	private final String firstName;
 	private final String lastName;
 	private final Role role;
@@ -18,6 +19,7 @@ public class User {
 		this.id = userBuilder.id;
 		this.email = userBuilder.email;
 		this.password = userBuilder.password;
+		this.salt = userBuilder.salt;
 		this.firstName = userBuilder.firstName;
 		this.lastName = userBuilder.lastName;
 		this.role = userBuilder.role;
@@ -27,16 +29,13 @@ public class User {
 		return new UserBuilder();
 	}
 
-	public void encryptPassword(PasswordEncryptor encryptor) {
-		password = encryptor.encrypt(password);
-	}
-
 /*	-	-	-	-	-	-	-	BUILDER -	-	-	-	-	-	-	-	-	*/
 
 	public static class UserBuilder<SELF extends UserBuilder<SELF>> {
 		private Integer id;
 		private String email;
 		private String password;
+		private String salt;
 		private String firstName;
 		private String lastName;
 		private Role role;
@@ -63,6 +62,11 @@ public class User {
 
 		public UserBuilder withPassword(String password) {
 			this.password = password;
+			return this;
+		}
+
+		public UserBuilder withSalt(String salt) {
+			this.salt = salt;
 			return this;
 		}
 
@@ -94,6 +98,10 @@ public class User {
 
 	public String getPassword() {
 		return password;
+	}
+
+	public String getSalt() {
+		return salt;
 	}
 
 	public String getFirstName() {

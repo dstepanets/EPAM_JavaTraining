@@ -9,6 +9,7 @@ import go.univer.service.UserService;
 import go.univer.service.validator.Validator;
 
 import java.util.List;
+import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
 
@@ -26,14 +27,16 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean login(String email, String password) {
-//		TODO validate email / pass before enctypting
-		String encryptedPassword = passwordEncryptor.encrypt(password);
-		return userRepository.findByEmail(email)
-				.map(User::getPassword)
-//				.filter(pass -> pass.equals(password))
-				.filter(pass -> pass.equals(encryptedPassword))
-				.isPresent();
+	public Optional<User> login(String email, String password) {
+		User tmpUser = User.builder().withEmail(email).withPassword(password).build();
+		userValidator.validate(tmpUser);
+		final Optional<User> user = userRepository.findByEmail(email);
+		if (user.isPresent()) {
+			String encryptedPassword = passwordEncryptor.encrypt(password, user.get().getSalt());
+			if (encryptedPassword.equals(user.get().getPassword()))
+				return user;
+		}
+		return Optional.empty();
 	}
 
 	@Override
@@ -42,8 +45,17 @@ public class UserServiceImpl implements UserService {
 		if (userRepository.findByEmail(user.getEmail()).isPresent()) {
 			throw new RuntimeException("User with this email was registered already");
 		}
-		user.encryptPassword(passwordEncryptor);
-		userRepository.save(user);
+		final String salt = passwordEncryptor.generateStringSalt();
+		final String encryptedPass = passwordEncryptor.encrypt(user.getPassword(), salt);
+		User newUser = User.builder()
+				.withEmail(user.getEmail())
+				.withPassword(encryptedPass)
+				.withSalt(salt)
+				.withFirstName(user.getFirstName())
+				.withLastName(user.getLastName())
+				.withRole(user.getRole())
+				.build();
+		userRepository.save(newUser);
 //		як варіант, id повертати?
 		return user;
 	}

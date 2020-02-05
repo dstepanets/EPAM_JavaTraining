@@ -19,15 +19,15 @@ import java.util.Optional;
 public class UserDaoImpl extends AbstractCrudDao<User> implements UserDao {
 	private static final Logger LOGGER = LogManager.getLogger(UserDaoImpl.class);
 
-	private static final String FIND_BY_EMAIL_QUERY = "SELECT * FROM users WHERE email=?";
+	private static final String FIND_BY_EMAIL_QUERY = "SELECT * FROM users WHERE email=?;";
 	private static final String FIND_ALL_QUERY = "SELECT * FROM users";
-	private static final String FIND_ALL_PAGINAL_QUERY = "SELECT * FROM users LIMIT ?, ?";
+	private static final String FIND_ALL_PAGINAL_QUERY = "SELECT * FROM users LIMIT ?, ?;";
 	private static final String SAVE_USER_QUERY =
-			"INSERT INTO users (email, password, first_name, last_name, isadmin) " +
-			"VALUES ('?', '?', '?', '?', ?);";
+			"INSERT INTO users (email, password, salt, first_name, last_name, isadmin) " +
+			"VALUES (?, ?, ?, ?, ?, ?);";
 	private static final String UPDATE_USER_QUERY =
-			"UPDATE users SET email='?', password='?', first_name='?', last_name='?', isadmin=? " +
-			"WHERE id=?";
+			"UPDATE users SET email='?', password='?', salt='?' first_name='?', last_name='?', isadmin=? " +
+			"WHERE id=?;";
 
 
 	public UserDaoImpl() {
@@ -44,9 +44,10 @@ public class UserDaoImpl extends AbstractCrudDao<User> implements UserDao {
 		try (final PreparedStatement preparedStatement = DBConnector.getConnection().prepareStatement(SAVE_USER_QUERY)) {
 			preparedStatement.setString(1, user.getEmail());
 			preparedStatement.setString(2, user.getPassword());
-			preparedStatement.setString(3, user.getFirstName());
-			preparedStatement.setString(4, user.getLastName());
-			preparedStatement.setInt(5, user.getRole().ordinal());
+			preparedStatement.setString(3, user.getSalt());
+			preparedStatement.setString(4, user.getFirstName());
+			preparedStatement.setString(5, user.getLastName());
+			preparedStatement.setInt(6, user.getRole().ordinal());
 			try (final ResultSet resultSet = preparedStatement.executeQuery()) {
 				LOGGER.debug(String.format("Saving new user: %s", user));
 			}
@@ -97,10 +98,11 @@ public class UserDaoImpl extends AbstractCrudDao<User> implements UserDao {
 		try (final PreparedStatement preparedStatement = DBConnector.getConnection().prepareStatement(UPDATE_USER_QUERY)) {
 			preparedStatement.setString(1, user.getEmail());
 			preparedStatement.setString(2, user.getPassword());
-			preparedStatement.setString(3, user.getFirstName());
-			preparedStatement.setString(4, user.getLastName());
-			preparedStatement.setInt(5, user.getRole().ordinal());
-			preparedStatement.setInt(6, user.getId());
+			preparedStatement.setString(3, user.getSalt());
+			preparedStatement.setString(4, user.getFirstName());
+			preparedStatement.setString(5, user.getLastName());
+			preparedStatement.setInt(6, user.getRole().ordinal());
+			preparedStatement.setInt(7, user.getId());
 			try (final ResultSet resultSet = preparedStatement.executeQuery()) {
 				LOGGER.debug(String.format("Executing user update query: ['%s']", preparedStatement));
 			}
@@ -114,9 +116,25 @@ public class UserDaoImpl extends AbstractCrudDao<User> implements UserDao {
 				.withId(resultSet.getInt("id"))
 				.withEmail(resultSet.getString("email"))
 				.withPassword(resultSet.getString("password"))
+				.withSalt(resultSet.getString("salt"))
 				.withFirstName(resultSet.getString("first_name"))
 				.withLastName(resultSet.getString("last_name"))
 				.withRole(User.Role.values()[resultSet.getInt("isadmin")])
 				.build();
 	}
+
+
+//	TODO tmp
+	public void populateDefaultPasswords(String encryptedPass) {
+		final String sql = "UPDATE users SET password=?;";
+		try (final PreparedStatement preparedStatement = DBConnector.getConnection().prepareStatement(sql)) {
+			preparedStatement.setString(1, encryptedPass);
+			preparedStatement.executeUpdate();
+			LOGGER.debug(String.format("Executing user update query: ['%s']", preparedStatement));
+		} catch (SQLException e) {
+			LOGGER.error(e);
+		}
+	}
+
+
 }

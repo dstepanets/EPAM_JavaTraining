@@ -7,15 +7,14 @@ import java.util.regex.Pattern;
 
 public class UserValidator implements Validator<User> {
 	private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9_!#$%&*+/=?`{}~^.-]+@[a-zA-Z0-9.-]+$");
-	private static final Pattern PASSWORD_PATTERN = Pattern.compile("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})");
+	private static final Pattern PASSWORD_PATTERN = Pattern.compile("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*+=]).{6,})");
 
 	@Override
 	public void validate(User user) {
 		if (user == null) {
-			throw new ValidateException("User not found");
+			throw new ValidateException("Empty user on validation");
 		}
 		validateEmail(user);
-		validatePassword(user);
 		validatePassword(user);
 	}
 

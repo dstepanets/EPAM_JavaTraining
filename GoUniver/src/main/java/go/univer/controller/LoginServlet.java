@@ -5,6 +5,7 @@ import go.univer.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,12 +24,15 @@ public class LoginServlet extends HttpServlet {
 		resp.setContentType("text/html");
 		try (PrintWriter writer = resp.getWriter()) {
 			writer.println("Email: " + email + " |Pass: " + password + "");
-			if (email.equals("111")) {
-//			if (userService.login(email, password)) {
-				req.getRequestDispatcher("/jsp/users.jsp").forward(req, resp);
+			if (userService.login(email, password).isPresent()) {
+				writer.println("Login success");
+//				resp.sendRedirect(req.getContextPath() + "/users.jsp");
+//				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("views/users.jsp");
+//				dispatcher.forward(req, resp);
+				req.getRequestDispatcher(req.getContextPath() + "/users").forward(req, resp);
 			} else {
 				writer.println("<p align='center'>Wrong credentials</p>");
-				req.getRequestDispatcher("/index.jsp").include(req,resp);
+				req.getRequestDispatcher("/login.jsp").include(req, resp);
 			}
 		} catch (ServletException | IOException e) {
 			LOG.error(e);

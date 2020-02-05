@@ -32,15 +32,17 @@ public class UserServiceImplTest {
 	private static final String BAD_PASSWORD = "pass";
 	private static final String INCORRECT_PASSWORD = "Pa555w@rd";
 	private static final String ENCODED_INCORRECT_PASSWORD = "AbraKadabraShwabra64654164";
+	public static final String SALT = "salt";
 
-	private static User USER;
+	private static User user;
 
 	@Before
 	public void setUp() {
-		USER = User.builder()
+		user = User.builder()
 				.withId(144)
 				.withEmail(EMAIL)
 				.withPassword(ENCODED_PASSWORD)
+				.withSalt(SALT)
 				.withFirstName("Petro")
 				.withLastName("Opudalo")
 				.withRole(User.Role.STUDENT)
@@ -73,8 +75,8 @@ public class UserServiceImplTest {
 		when(userDao.findByEmail(anyString())).thenReturn(Optional.empty());
 		doNothing().when(userDao).save(any(User.class));
 
-		final User actual = userService.register(USER);
-		assertEquals(USER, actual);
+		final User actual = userService.register(user);
+		assertEquals(user, actual);
 
 		verify(userValidator).validate(any(User.class));
 		verify(userDao).findByEmail(anyString());
@@ -108,46 +110,42 @@ public class UserServiceImplTest {
 	public void registrationFailsUserExists() {
 		expectedEx.expect(RuntimeException.class);
 		expectedEx.expectMessage("User with this email was registered already");
-		when(userDao.findByEmail(anyString())).thenReturn(Optional.of(USER));
-		userService.register(USER);
+		when(userDao.findByEmail(anyString())).thenReturn(Optional.of(user));
+		userService.register(user);
 	}
 
 	@Test
 	public void logInSucceeds() {
-		when(passwordEncryptor.encrypt(eq(PASSWORD))).thenReturn(ENCODED_PASSWORD);
-		when(userDao.findByEmail(anyString())).thenReturn(Optional.of(USER));
+		when(passwordEncryptor.encrypt(eq(PASSWORD), eq(SALT))).thenReturn(ENCODED_PASSWORD);
+		when(userDao.findByEmail(anyString())).thenReturn(Optional.of(user));
 
-		final boolean isLogin = userService.login(EMAIL, PASSWORD);
-		assertTrue(isLogin);
+		final Optional<User> user = userService.login(EMAIL, PASSWORD);
+		assertTrue(user.isPresent());
 
-		verify(passwordEncryptor).encrypt(eq(PASSWORD));
+		verify(passwordEncryptor).encrypt(eq(PASSWORD), eq(SALT));
 		verify(userDao).findByEmail(eq(EMAIL));
-		verifyZeroInteractions(userValidator);
 	}
 
 	@Test
 	public void logInFailsUserWithThisEmailNotFound() {
-		when(passwordEncryptor.encrypt(eq(PASSWORD))).thenReturn(ENCODED_PASSWORD);
+		when(passwordEncryptor.encrypt(eq(PASSWORD), eq(SALT))).thenReturn(ENCODED_PASSWORD);
 		when(userDao.findByEmail(anyString())).thenReturn(Optional.empty());
 
-		final boolean isLogin = userService.login(EMAIL, PASSWORD);
-		assertFalse(isLogin);
+		final Optional<User> user  = userService.login(EMAIL, PASSWORD);
+		assertFalse(user.isPresent());
 
-		verify(passwordEncryptor).encrypt(eq(PASSWORD));
 		verify(userDao).findByEmail(eq(EMAIL));
-		verifyZeroInteractions(userValidator);
 	}
 
 	@Test
 	public void logInFailsPasswordIncorrect() {
-		when(passwordEncryptor.encrypt(eq(INCORRECT_PASSWORD))).thenReturn(ENCODED_INCORRECT_PASSWORD);
-		when(userDao.findByEmail(anyString())).thenReturn(Optional.of(USER));
+		when(passwordEncryptor.encrypt(eq(INCORRECT_PASSWORD), eq(SALT))).thenReturn(ENCODED_INCORRECT_PASSWORD);
+		when(userDao.findByEmail(anyString())).thenReturn(Optional.of(user));
 
-		final boolean isLogin = userService.login(EMAIL, INCORRECT_PASSWORD);
-		assertFalse(isLogin);
+		final Optional<User> user = userService.login(EMAIL, INCORRECT_PASSWORD);
+		assertFalse(user.isPresent());
 
-		verify(passwordEncryptor).encrypt(eq(INCORRECT_PASSWORD));
+		verify(passwordEncryptor).encrypt(eq(INCORRECT_PASSWORD), eq(SALT));
 		verify(userDao).findByEmail(eq(EMAIL));
-		verifyZeroInteractions(userValidator);
 	}
 }
