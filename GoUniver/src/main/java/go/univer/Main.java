@@ -1,12 +1,10 @@
 package go.univer;
 
-import go.univer.dao.UserDao;
 import go.univer.dao.impl.UserDaoImpl;
 import go.univer.entity.users.User;
 import go.univer.injector.AppInjector;
 import go.univer.service.PasswordEncryptor;
 import go.univer.service.UserService;
-import go.univer.service.impl.UserServiceImpl;
 import go.univer.service.validator.UserValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -62,7 +60,11 @@ public class Main {
 
 	private static void testLogin() {
 		Optional<User> user = USER_SERVICE.login("god@godmail.god", "Qwe!23");
-		System.out.println(user.isPresent());
+		if (user.isPresent()) {
+			System.out.println("\nLOGIN SUCCESS! " + user + "\n");
+		} else {
+			System.out.println("\nLOGIN FAILED!\n");
+		}
 		user = USER_SERVICE.login("god@godmail.godxx", "Qwe!23");
 		System.out.println(user.isPresent());
 	}

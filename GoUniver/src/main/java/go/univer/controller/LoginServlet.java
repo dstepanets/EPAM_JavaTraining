@@ -5,7 +5,6 @@ import go.univer.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,18 +22,19 @@ public class LoginServlet extends HttpServlet {
 		String password = req.getParameter("password");
 		resp.setContentType("text/html");
 		try (PrintWriter writer = resp.getWriter()) {
-			writer.println("Email: " + email + " |Pass: " + password + "");
+			writer.println("<p>Email: " + email + " |Pass: " + password + "<p>");
 			if (userService.login(email, password).isPresent()) {
 				writer.println("Login success");
-//				resp.sendRedirect(req.getContextPath() + "/users.jsp");
 //				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("views/users.jsp");
 //				dispatcher.forward(req, resp);
-				req.getRequestDispatcher(req.getContextPath() + "/users").forward(req, resp);
+//				req.getRequestDispatcher(req.getContextPath() + "/users").forward(req, resp);
+				resp.sendRedirect(req.getContextPath() + "/users");
 			} else {
 				writer.println("<p align='center'>Wrong credentials</p>");
-				req.getRequestDispatcher("/login.jsp").include(req, resp);
+				resp.sendRedirect(req.getContextPath() + "/views/login.jsp");
+//				req.getRequestDispatcher("/login").include(req, resp);
 			}
-		} catch (ServletException | IOException e) {
+		} catch (/*ServletException |*/ IOException e) {
 			LOG.error(e);
 		}
 	}

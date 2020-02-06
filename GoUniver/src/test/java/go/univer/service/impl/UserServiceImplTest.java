@@ -4,9 +4,8 @@ import go.univer.dao.impl.UserDaoImpl;
 import go.univer.entity.users.User;
 import go.univer.service.PasswordEncryptor;
 import go.univer.service.validator.UserValidator;
-import go.univer.service.validator.ValidateException;
+import go.univer.service.validator.ValidationException;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -14,13 +13,20 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doCallRealMethod;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceImplTest {
@@ -34,20 +40,15 @@ public class UserServiceImplTest {
 	private static final String ENCODED_INCORRECT_PASSWORD = "AbraKadabraShwabra64654164";
 	public static final String SALT = "salt";
 
-	private static User user;
-
-	@Before
-	public void setUp() {
-		user = User.builder()
-				.withId(144)
-				.withEmail(EMAIL)
-				.withPassword(ENCODED_PASSWORD)
-				.withSalt(SALT)
-				.withFirstName("Petro")
-				.withLastName("Opudalo")
-				.withRole(User.Role.STUDENT)
-				.build();
-	}
+	private static final User USER = User.builder()
+			.withId(144)
+			.withEmail(EMAIL)
+			.withPassword(ENCODED_PASSWORD)
+			.withSalt(SALT)
+			.withFirstName("Petro")
+			.withLastName("Opudalo")
+			.withRole(User.Role.STUDENT)
+			.build();
 
 	@Mock
 	private UserDaoImpl userDao;
@@ -75,8 +76,8 @@ public class UserServiceImplTest {
 		when(userDao.findByEmail(anyString())).thenReturn(Optional.empty());
 		doNothing().when(userDao).save(any(User.class));
 
-		final User actual = userService.register(user);
-		assertEquals(user, actual);
+		final User actual = userService.register(USER);
+		assertEquals(USER, actual);
 
 		verify(userValidator).validate(any(User.class));
 		verify(userDao).findByEmail(anyString());
@@ -85,7 +86,7 @@ public class UserServiceImplTest {
 
 	@Test
 	public void registrationFailsBadEmail() {
-		expectedEx.expect(ValidateException.class);
+		expectedEx.expect(ValidationException.class);
 		final User user = User.builder()
 				.withEmail(BAD_EMAIL)
 				.withPassword(PASSWORD)
@@ -97,7 +98,7 @@ public class UserServiceImplTest {
 
 	@Test
 	public void registrationFailsBadPassword() {
-		expectedEx.expect(ValidateException.class);
+		expectedEx.expect(ValidationException.class);
 		final User user = User.builder()
 				.withEmail(EMAIL)
 				.withPassword(BAD_PASSWORD)
@@ -110,14 +111,14 @@ public class UserServiceImplTest {
 	public void registrationFailsUserExists() {
 		expectedEx.expect(RuntimeException.class);
 		expectedEx.expectMessage("User with this email was registered already");
-		when(userDao.findByEmail(anyString())).thenReturn(Optional.of(user));
-		userService.register(user);
+		when(userDao.findByEmail(anyString())).thenReturn(Optional.of(USER));
+		userService.register(USER);
 	}
 
 	@Test
 	public void logInSucceeds() {
 		when(passwordEncryptor.encrypt(eq(PASSWORD), eq(SALT))).thenReturn(ENCODED_PASSWORD);
-		when(userDao.findByEmail(anyString())).thenReturn(Optional.of(user));
+		when(userDao.findByEmail(anyString())).thenReturn(Optional.of(USER));
 
 		final Optional<User> user = userService.login(EMAIL, PASSWORD);
 		assertTrue(user.isPresent());
@@ -131,7 +132,7 @@ public class UserServiceImplTest {
 		when(passwordEncryptor.encrypt(eq(PASSWORD), eq(SALT))).thenReturn(ENCODED_PASSWORD);
 		when(userDao.findByEmail(anyString())).thenReturn(Optional.empty());
 
-		final Optional<User> user  = userService.login(EMAIL, PASSWORD);
+		final Optional<User> user = userService.login(EMAIL, PASSWORD);
 		assertFalse(user.isPresent());
 
 		verify(userDao).findByEmail(eq(EMAIL));
@@ -140,7 +141,7 @@ public class UserServiceImplTest {
 	@Test
 	public void logInFailsPasswordIncorrect() {
 		when(passwordEncryptor.encrypt(eq(INCORRECT_PASSWORD), eq(SALT))).thenReturn(ENCODED_INCORRECT_PASSWORD);
-		when(userDao.findByEmail(anyString())).thenReturn(Optional.of(user));
+		when(userDao.findByEmail(anyString())).thenReturn(Optional.of(USER));
 
 		final Optional<User> user = userService.login(EMAIL, INCORRECT_PASSWORD);
 		assertFalse(user.isPresent());

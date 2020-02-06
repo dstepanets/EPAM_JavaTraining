@@ -14,14 +14,14 @@ public class PaginalList<T> {
 	}
 
 	public List<T> getItems() {
-			return items;
-		}
+		return items;
+	}
 
 	public Page getPage() {
 		return page;
 	}
 
 	public int getMaxPageNumber() {
-			return maxPageNumber;
-		}
+		return maxPageNumber;
+	}
 }

@@ -17,12 +17,14 @@ public class AppInjector {
 	private static final UserDao USER_REPOSITORY = new UserDaoImpl();
 	private static final UserService USER_SERVICE = new UserServiceImpl(USER_REPOSITORY, PASSWORD_ENCRYPTOR, USER_VALIDATOR);
 
-	private AppInjector() {}
+	private AppInjector() {
+	}
+
 	public static AppInjector getInstance() {
 		return INSTANCE;
 	}
 
-	public UserService getUserService(){
+	public UserService getUserService() {
 		return USER_SERVICE;
 	}
 

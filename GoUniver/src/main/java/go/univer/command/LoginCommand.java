@@ -9,24 +9,24 @@ import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 public class LoginCommand implements Command {
-    private final UserService userService;
+	private final UserService userService;
 
-    public LoginCommand(UserService userService) {
-        this.userService = userService;
-    }
+	public LoginCommand(UserService userService) {
+		this.userService = userService;
+	}
 
-    @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
-        final String email = (String) request.getAttribute("email");
-        final String password = (String) request.getAttribute("password");
+	@Override
+	public String execute(HttpServletRequest request, HttpServletResponse response) {
+		final String email = (String) request.getAttribute("email");
+		final String password = (String) request.getAttribute("password");
 
-        final Optional<User> user = userService.login(email, password);
+		final Optional<User> user = userService.login(email, password);
 
-        if (user.isPresent()) {
-            final HttpSession session = request.getSession();
-            session.setAttribute("user", user.get());
-            return "view/profile.jsp";
-        }
-        return "view/login.jsp";
-    }
+		if (user.isPresent()) {
+			final HttpSession session = request.getSession();
+			session.setAttribute("user", user.get());
+			return "view/profile.jsp";
+		}
+		return "view/login.jsp";
+	}
 }

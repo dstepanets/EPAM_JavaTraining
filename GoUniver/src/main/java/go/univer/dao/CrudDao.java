@@ -1,18 +1,22 @@
 package go.univer.dao;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 public interface CrudDao<E> {
-//	create
+	//	create
 	void save(E entity);
-//	read
+
+	//	read
 	Optional<E> findById(Integer id);
+
 	List<E> findAll();
+
 	long count();
-//	update
+
+	//	update
 	void update(E entity);
-//	delete
+
+	//	delete
 	void deleteById(Integer id);
 }

@@ -1,7 +1,5 @@
 package go.univer.entity.users;
 
-import go.univer.service.PasswordEncryptor;
-
 import java.util.Objects;
 
 public class User {
@@ -13,7 +11,7 @@ public class User {
 	private final String lastName;
 	private final Role role;
 
-	public enum Role { STUDENT, ADMIN }
+	public enum Role {STUDENT, ADMIN}
 
 	protected User(UserBuilder userBuilder) {
 		this.id = userBuilder.id;
@@ -29,7 +27,7 @@ public class User {
 		return new UserBuilder();
 	}
 
-/*	-	-	-	-	-	-	-	BUILDER -	-	-	-	-	-	-	-	-	*/
+	/*	-	-	-	-	-	-	-	BUILDER -	-	-	-	-	-	-	-	-	*/
 
 	public static class UserBuilder<SELF extends UserBuilder<SELF>> {
 		private Integer id;
@@ -40,14 +38,15 @@ public class User {
 		private String lastName;
 		private Role role;
 
-		public UserBuilder() {}
+		public UserBuilder() {
+		}
 
 		public User build() {
 			return new User(this);
 		}
 
-		protected SELF self(){
-			return (SELF)this;
+		protected SELF self() {
+			return (SELF) this;
 		}
 
 		public UserBuilder withId(Integer id) {
@@ -86,7 +85,7 @@ public class User {
 		}
 	}
 
-/*	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	*/
+	/*	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	*/
 
 	public Integer getId() {
 		return id;

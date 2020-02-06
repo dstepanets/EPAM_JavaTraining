@@ -6,13 +6,15 @@ import go.univer.dao.UserDao;
 import go.univer.entity.users.User;
 import go.univer.service.PasswordEncryptor;
 import go.univer.service.UserService;
+import go.univer.service.validator.ValidationException;
 import go.univer.service.validator.Validator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.util.List;
 import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
-
+	private static final Logger LOG = LogManager.getLogger(UserServiceImpl.class);
 	private static final int USERS_PER_PAGE = 5;
 
 	private final UserDao userRepository;
@@ -28,8 +30,13 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Optional<User> login(String email, String password) {
-		User tmpUser = User.builder().withEmail(email).withPassword(password).build();
-		userValidator.validate(tmpUser);
+		try {
+			User tmpUser = User.builder().withEmail(email).withPassword(password).build();
+			userValidator.validate(tmpUser);
+		} catch (ValidationException e) {
+			LOG.info(e);
+			return Optional.empty();
+		}
 		final Optional<User> user = userRepository.findByEmail(email);
 		if (user.isPresent()) {
 			String encryptedPassword = passwordEncryptor.encrypt(password, user.get().getSalt());
@@ -41,6 +48,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User register(User user) {
+//		TODO Deal with ValidationException
 		userValidator.validate(user);
 		if (userRepository.findByEmail(user.getEmail()).isPresent()) {
 			throw new RuntimeException("User with this email was registered already");

@@ -69,6 +69,6 @@ public class ExamDao extends AbstractCrudDao<Exam> {
 	protected Exam mapResultSetToEntity(ResultSet resultSet) throws SQLException {
 		final int id = resultSet.getInt(1);
 		final String subject = resultSet.getString("subject");
-		return new Exam(id, subject,0);
+		return new Exam(id, subject, 0);
 	}
 }

@@ -17,15 +17,25 @@ public class UsersServlet extends HttpServlet {
 	private final UserService userService = AppInjector.getInstance().getUserService();
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		execute(req, resp);
+	}
 
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		execute(req, resp);
+	}
+
+	private void execute(HttpServletRequest req, HttpServletResponse resp) {
 		String email = req.getParameter("email");
 		String password = req.getParameter("password");
 		resp.setContentType("text/html");
 		try (PrintWriter writer = resp.getWriter()) {
 			writer.println("e: " + email + " |p: " + password + "");
+			writer.println("<h3>Users List</h3>");
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-
 	}
 
 }

@@ -13,7 +13,7 @@ public class DBConnector {
 	private static final Logger LOGGER = LogManager.getLogger(DBConnector.class);
 
 	private static final String DEFAULT_POPERTIES_FILE_PATH = "db/database";
-	private static final  HikariConfig CONFIG = new HikariConfig();
+	private static final HikariConfig CONFIG = new HikariConfig();
 	private static HikariDataSource dataSource;
 
 	public static Connection getConnection() throws SQLException {
@@ -28,14 +28,24 @@ public class DBConnector {
 
 	private static void setConfigs(String propertiesFilePath) {
 		ResourceBundle resource = ResourceBundle.getBundle(propertiesFilePath);
-		CONFIG.setJdbcUrl(resource.getString("db.url"));
-		CONFIG.setUsername(resource.getString("db.user"));
-		CONFIG.setPassword(resource.getString("db.password"));
-		CONFIG.addDataSourceProperty("cachePrepStmts", resource.getString("cachePrepStmts"));
-		CONFIG.addDataSourceProperty("prepStmtCacheSize", resource.getString("prepStmtCacheSize"));
-		CONFIG.addDataSourceProperty("prepStmtCacheSqlLimit", resource.getString("prepStmtCacheSqlLimit"));
+		CONFIG.setJdbcUrl(resource.getString("jdbcUrl"));
+		CONFIG.setUsername(resource.getString("username"));
+		CONFIG.setPassword(resource.getString("password"));
+		CONFIG.setDriverClassName(resource.getString("driverClassName"));
+		CONFIG.addDataSourceProperty("cachePrepStmts", resource.getString("DS.cachePrepStmts"));
+		CONFIG.addDataSourceProperty("prepStmtCacheSize", resource.getString("DS.prepStmtCacheSize"));
+		CONFIG.addDataSourceProperty("prepStmtCacheSqlLimit", resource.getString("DS.prepStmtCacheSqlLimit"));
+
+		CONFIG.addDataSourceProperty("useServerPrepStmts", resource.getString("DS.useServerPrepStmts"));
+		CONFIG.addDataSourceProperty("useLocalSessionState", resource.getString("DS.useLocalSessionState"));
+		CONFIG.addDataSourceProperty("rewriteBatchedStatements", resource.getString("DS.rewriteBatchedStatements"));
+		CONFIG.addDataSourceProperty("cacheResultSetMetadata", resource.getString("DS.cacheResultSetMetadata"));
+		CONFIG.addDataSourceProperty("cacheServerConfiguration", resource.getString("DS.cacheServerConfiguration"));
+		CONFIG.addDataSourceProperty("elideSetAutoCommits", resource.getString("DS.elideSetAutoCommits"));
+		CONFIG.addDataSourceProperty("maintainTimeStats", resource.getString("DS.maintainTimeStats"));
 		dataSource = new HikariDataSource(CONFIG);
 	}
 
-	private DBConnector() { }
+	private DBConnector() {
+	}
 }

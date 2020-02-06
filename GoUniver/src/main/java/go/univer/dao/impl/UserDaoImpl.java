@@ -24,10 +24,10 @@ public class UserDaoImpl extends AbstractCrudDao<User> implements UserDao {
 	private static final String FIND_ALL_PAGINAL_QUERY = "SELECT * FROM users LIMIT ?, ?;";
 	private static final String SAVE_USER_QUERY =
 			"INSERT INTO users (email, password, salt, first_name, last_name, isadmin) " +
-			"VALUES (?, ?, ?, ?, ?, ?);";
+					"VALUES (?, ?, ?, ?, ?, ?);";
 	private static final String UPDATE_USER_QUERY =
 			"UPDATE users SET email='?', password='?', salt='?' first_name='?', last_name='?', isadmin=? " +
-			"WHERE id=?;";
+					"WHERE id=?;";
 
 
 	public UserDaoImpl() {
@@ -124,7 +124,7 @@ public class UserDaoImpl extends AbstractCrudDao<User> implements UserDao {
 	}
 
 
-//	TODO tmp
+	//	TODO tmp
 	public void populateDefaultPasswords(String encryptedPass) {
 		final String sql = "UPDATE users SET password=?;";
 		try (final PreparedStatement preparedStatement = DBConnector.getConnection().prepareStatement(sql)) {

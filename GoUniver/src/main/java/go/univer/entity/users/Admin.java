@@ -10,7 +10,8 @@ public class Admin extends User {
 
 	public static class AdminBuilder extends UserBuilder<AdminBuilder> {
 
-		public AdminBuilder() { }
+		public AdminBuilder() {
+		}
 
 		@Override
 		public Admin build() {

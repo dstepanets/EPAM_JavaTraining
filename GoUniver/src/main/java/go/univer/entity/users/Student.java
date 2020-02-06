@@ -1,7 +1,7 @@
 package go.univer.entity.users;
 
-import go.univer.entity.Major;
 import go.univer.entity.Exam;
+import go.univer.entity.Major;
 
 import java.util.List;
 
@@ -19,14 +19,15 @@ public class Student extends User {
 
 
 
-/*	-	-	-	-	-	-	-	BUILDER -	-	-	-	-	-	-	-	-	*/
+	/*	-	-	-	-	-	-	-	BUILDER -	-	-	-	-	-	-	-	-	*/
 
 	public static class StudentBuilder extends UserBuilder<StudentBuilder> {
 		private List<Exam> examsPassed;
 		private List<Major> majorsApplied;
 		private int schoolScore;
 
-		public StudentBuilder() { }
+		public StudentBuilder() {
+		}
 
 		@Override
 		public User build() {
@@ -54,7 +55,7 @@ public class Student extends User {
 		}
 	}
 
-/*	-	-	-	-	-	-	-	BUILDER -	-	-	-	-	-	-	-	-	*/
+	/*	-	-	-	-	-	-	-	BUILDER -	-	-	-	-	-	-	-	-	*/
 
 	@Override
 	public String toString() {
@@ -64,9 +65,6 @@ public class Student extends User {
 				", schoolScore=" + schoolScore +
 				"} " + super.toString();
 	}
-
-
-
 
 
 }
