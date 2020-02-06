@@ -59,6 +59,13 @@
                 <button class="btn btn-primary btn-block" type="submit">Log In</button>
             </form>
         </div>
+        <div>
+            <p align="center" style="color:darkred">
+                <c:if test="${loginError}">
+                    Sorry. Wrong userEntity name or password :(
+                </c:if>
+            </p>
+        </div>
     </section>
 </main>
 <footer class="page-footer dark" style="padding: 0;height: 51px;">

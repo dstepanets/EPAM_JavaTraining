@@ -1,6 +1,6 @@
 package go.univer.command;
 
-import go.univer.entity.users.User;
+import go.univer.entity.users.UserEntity;
 import go.univer.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,14 +27,14 @@ public class RegisterCommand implements Command {
 			return "view/register.jsp";
 		}
 
-		final User user = User.builder()
+		final UserEntity userEntity = UserEntity.builder()
 				.withEmail(email)
 				.withFirstName(firstName)
 				.withLastName(lastName)
 				.withPassword(password1)
 				.build();
 
-		userService.register(user);
+		userService.register(userEntity);
 
 		return "view/login.jsp";
 	}

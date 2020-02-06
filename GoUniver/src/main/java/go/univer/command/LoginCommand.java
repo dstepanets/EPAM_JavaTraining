@@ -1,6 +1,6 @@
 package go.univer.command;
 
-import go.univer.entity.users.User;
+import go.univer.entity.users.UserEntity;
 import go.univer.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +20,7 @@ public class LoginCommand implements Command {
 		final String email = (String) request.getAttribute("email");
 		final String password = (String) request.getAttribute("password");
 
-		final Optional<User> user = userService.login(email, password);
+		final Optional<UserEntity> user = userService.login(email, password);
 
 		if (user.isPresent()) {
 			final HttpSession session = request.getSession();

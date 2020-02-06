@@ -33,7 +33,7 @@
                 class="collapse navbar-collapse" id="navcol-1">
             <ul class="nav navbar-nav ml-auto">
                 <li class="nav-item" role="presentation"><a class="nav-link active" href="index.jsp"><fmt:message key="nav.home"/></a></li>
-                <li class="nav-item" role="presentation"><a class="nav-link" href="views/login.jsp"><fmt:message key="nav.log_in"/></a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link" href="login"><fmt:message key="nav.log_in"/></a></li>
                 <li class="nav-item" role="presentation"><a class="nav-link" href="views/registration.jsp"><fmt:message key="nav.register"/></a></li>
             </ul>
             <a href="?locale=ua" style="font-size: 14px;">UA</a>

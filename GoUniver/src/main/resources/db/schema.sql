@@ -1,4 +1,4 @@
-create table users
+create table userEntities
 (
 	id int auto_increment,
 	email varchar(100) not null,
@@ -12,7 +12,7 @@ create table users
 		unique (id)
 );
 
-alter table users
+alter table userEntities
 	add primary key (id);
 
 
@@ -78,7 +78,7 @@ create table student_majors
 	student_id int not null,
 	major_id int not null,
 	constraint student_id
-		foreign key (student_id) references users (id),
+		foreign key (student_id) references userEntities (id),
 	constraint student_majors
 		foreign key (major_id) references majors (id)
 );
@@ -102,7 +102,7 @@ create table marks
 	constraint `exam-id`
 		foreign key (exam_id) references exams (id),
 	constraint `student-id`
-		foreign key (student_id) references users (id)
+		foreign key (student_id) references userEntities (id)
 );
 
 create index exam_id_idx

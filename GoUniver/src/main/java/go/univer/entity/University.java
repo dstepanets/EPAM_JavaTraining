@@ -1,27 +1,27 @@
 package go.univer.entity;
 
-import go.univer.entity.users.User;
+import go.univer.entity.users.UserEntity;
 
 import java.util.List;
 
 public class University {
-	private final List<User> applicants;
-	private final List<User> admins;
+	private final List<UserEntity> applicants;
+	private final List<UserEntity> admins;
 	private final List<Major> majors;
 	private final List<Exam> exams;
 
-	public University(List<User> applicants, List<User> admins, List<Major> majors, List<Exam> exams) {
+	public University(List<UserEntity> applicants, List<UserEntity> admins, List<Major> majors, List<Exam> exams) {
 		this.applicants = applicants;
 		this.admins = admins;
 		this.majors = majors;
 		this.exams = exams;
 	}
 
-	public List<User> getApplicants() {
+	public List<UserEntity> getApplicants() {
 		return applicants;
 	}
 
-	public List<User> getAdmins() {
+	public List<UserEntity> getAdmins() {
 		return admins;
 	}
 

@@ -5,12 +5,12 @@ import go.univer.entity.Major;
 
 import java.util.List;
 
-public class Student extends User {
+public class StudentEntity extends UserEntity {
 	private final List<Exam> examsPassed;
 	private final List<Major> majorsApplied;
 	private final int schoolScore;
 
-	protected Student(StudentBuilder builder) {
+	protected StudentEntity(StudentBuilder builder) {
 		super(builder);
 		this.examsPassed = builder.examsPassed;
 		this.majorsApplied = builder.majorsApplied;
@@ -30,8 +30,8 @@ public class Student extends User {
 		}
 
 		@Override
-		public User build() {
-			return new Student(this);
+		public UserEntity build() {
+			return new StudentEntity(this);
 		}
 
 		@Override

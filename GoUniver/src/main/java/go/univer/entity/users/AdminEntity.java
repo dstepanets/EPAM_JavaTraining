@@ -1,8 +1,8 @@
 package go.univer.entity.users;
 
-public class Admin extends User {
+public class AdminEntity extends UserEntity {
 
-	protected Admin(AdminBuilder builder) {
+	protected AdminEntity(AdminBuilder builder) {
 		super(builder);
 	}
 
@@ -14,8 +14,8 @@ public class Admin extends User {
 		}
 
 		@Override
-		public Admin build() {
-			return new Admin(this);
+		public AdminEntity build() {
+			return new AdminEntity(this);
 		}
 
 		@Override

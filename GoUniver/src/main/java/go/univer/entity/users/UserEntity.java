@@ -2,7 +2,7 @@ package go.univer.entity.users;
 
 import java.util.Objects;
 
-public class User {
+public class UserEntity {
 	private final Integer id;
 	private final String email;
 	private final String password;
@@ -13,7 +13,7 @@ public class User {
 
 	public enum Role {STUDENT, ADMIN}
 
-	protected User(UserBuilder userBuilder) {
+	protected UserEntity(UserBuilder userBuilder) {
 		this.id = userBuilder.id;
 		this.email = userBuilder.email;
 		this.password = userBuilder.password;
@@ -41,8 +41,8 @@ public class User {
 		public UserBuilder() {
 		}
 
-		public User build() {
-			return new User(this);
+		public UserEntity build() {
+			return new UserEntity(this);
 		}
 
 		protected SELF self() {
@@ -135,13 +135,13 @@ public class User {
 		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
-		User user = (User) o;
-		return id.equals(user.id) &&
-				email.equals(user.email) &&
-				password.equals(user.password) &&
-				firstName.equals(user.firstName) &&
-				lastName.equals(user.lastName) &&
-				role == user.role;
+		UserEntity userEntity = (UserEntity) o;
+		return id.equals(userEntity.id) &&
+				email.equals(userEntity.email) &&
+				password.equals(userEntity.password) &&
+				firstName.equals(userEntity.firstName) &&
+				lastName.equals(userEntity.lastName) &&
+				role == userEntity.role;
 	}
 
 	@Override

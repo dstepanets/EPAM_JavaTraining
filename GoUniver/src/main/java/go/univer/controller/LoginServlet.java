@@ -17,10 +17,17 @@ public class LoginServlet extends HttpServlet {
 	private final UserService userService = AppInjector.getInstance().getUserService();
 
 	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.getServletContext().setAttribute("loginError", false);
+		req.getRequestDispatcher(req.getContextPath() + "/views/login.jsp").forward(req, resp);
+	}
+
+	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String email = req.getParameter("email");
 		String password = req.getParameter("password");
 		resp.setContentType("text/html");
+//		req.getServletContext().setAttribute("loginError", null);
 		try (PrintWriter writer = resp.getWriter()) {
 			writer.println("<p>Email: " + email + " |Pass: " + password + "<p>");
 			if (userService.login(email, password).isPresent()) {
@@ -32,6 +39,8 @@ public class LoginServlet extends HttpServlet {
 			} else {
 				writer.println("<p align='center'>Wrong credentials</p>");
 				resp.sendRedirect(req.getContextPath() + "/views/login.jsp");
+				req.getServletContext().setAttribute("loginError", true);
+//				req.setAttribute("loginError", "Wrong credentials");
 //				req.getRequestDispatcher("/login").include(req, resp);
 			}
 		} catch (/*ServletException |*/ IOException e) {
