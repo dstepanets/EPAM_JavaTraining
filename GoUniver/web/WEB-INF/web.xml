@@ -19,7 +19,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>usersServlet</servlet-name>
-		<url-pattern>/userEntities</url-pattern>
+		<url-pattern>/users</url-pattern>
 	</servlet-mapping>
 
 

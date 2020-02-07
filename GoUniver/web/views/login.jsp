@@ -62,7 +62,7 @@
         <div>
             <p align="center" style="color:darkred">
                 <c:if test="${loginError}">
-                    Sorry. Wrong userEntity name or password :(
+                    Wrong credentials :(
                 </c:if>
             </p>
         </div>

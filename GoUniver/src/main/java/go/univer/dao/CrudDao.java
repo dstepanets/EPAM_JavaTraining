@@ -12,7 +12,7 @@ public interface CrudDao<E> {
 
 	List<E> findAll();
 
-	long count();
+	int count();
 
 	//	update
 	void update(E entity);

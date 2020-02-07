@@ -74,7 +74,7 @@ public abstract class AbstractCrudDao<E> implements CrudDao<E> {
 	}
 
 	@Override
-	public long count() {
+	public int count() {
 		try (final PreparedStatement preparedStatement = DBConnector.getConnection().prepareStatement(countRowsQuery)) {
 			try (final ResultSet resultSet = preparedStatement.executeQuery()) {
 				if (resultSet.next()) {

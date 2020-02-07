@@ -19,7 +19,8 @@ public class LoginServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.getServletContext().setAttribute("loginError", false);
-		req.getRequestDispatcher(req.getContextPath() + "/views/login.jsp").forward(req, resp);
+		resp.sendRedirect(req.getContextPath() + "/views/login.jsp");
+//		req.getRequestDispatcher(req.getContextPath() + "/views/login.jsp").forward(req, resp);
 	}
 
 	@Override
@@ -35,7 +36,8 @@ public class LoginServlet extends HttpServlet {
 //				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("views/users.jsp");
 //				dispatcher.forward(req, resp);
 //				req.getRequestDispatcher(req.getContextPath() + "/users").forward(req, resp);
-				resp.sendRedirect(req.getContextPath() + "/users");
+//				resp.sendRedirect(req.getContextPath() + "/users");
+				resp.sendRedirect(req.getContextPath() + "/views/users.jsp");
 			} else {
 				writer.println("<p align='center'>Wrong credentials</p>");
 				resp.sendRedirect(req.getContextPath() + "/views/login.jsp");
