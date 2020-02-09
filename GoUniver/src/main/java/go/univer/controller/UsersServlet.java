@@ -1,19 +1,15 @@
 package go.univer.controller;
 
-import go.univer.domain.User;
 import go.univer.injector.AppInjector;
 import go.univer.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
 
 public class UsersServlet extends HttpServlet {
 	private static final Logger LOG = LogManager.getLogger(UsersServlet.class);
