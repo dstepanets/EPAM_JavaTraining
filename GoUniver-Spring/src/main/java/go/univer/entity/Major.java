@@ -1,44 +1,39 @@
 package go.univer.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity(name = "major")
+@Table(name = "majors")
 public class Major {
-	private final int id;
-	private final String title;
-	private final List<Exam> exams;
-	private final int capacity;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private int id;
+	@Column(name = "title")
+	@NotEmpty
+	private String title;
+	@ManyToMany
+	@JoinTable(name = "major_exams", joinColumns = @JoinColumn(name = "major_id"), inverseJoinColumns = @JoinColumn(name = "exam_id"))
+	private List<Exam> exams;
+	private int capacity;            // TODO Add to table
 //	private List<User> applicants;
 
-	public Major(int id, String title, List<Exam> exams, int capacity) {
-		this.id = id;
-		this.title = title;
-		this.exams = exams;
-		this.capacity = capacity;
-	}
 
-	public int getId() {
-		return id;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public List<Exam> getExams() {
-		return exams;
-	}
-
-	public int getCapacity() {
-		return capacity;
-	}
-
-	@Override
-	public String toString() {
-		return "Major{" +
-				"id=" + id +
-				", title='" + title + '\'' +
-				", exams=" + exams +
-				", capacity=" + capacity +
-				'}';
-	}
 }

@@ -1,153 +1,57 @@
 package go.univer.entity.users;
 
-import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity(name = "user")
+@Table(name = "users")
 public class UserEntity {
-	private final Integer id;
-	private final String email;
-	private final String password;
-	private final String salt;
-	private final String firstName;
-	private final String lastName;
-	private final Role role;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private Integer id;
+	@Column(name = "email")
+	@Email(message = "*Please provide a valid Email")
+	@NotEmpty(message = "*Please provide an email")
+	private String email;
+	@Column(name = "password")
+	@Length(min = 5, message = "*Your password must have at least 5 characters")
+	@Pattern(regexp = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*+=]).{5,})",
+			message = "* Your password must have at least 1 char of each of these types: " +
+					"uppercase latin letter, lowercase, digit, special symbol (!@#$%^&*+=)")
+	@NotEmpty(message = "*Please provide your password")
+	private String password;
+	@Column(name = "salt")
+	@NotEmpty
+	private String salt;
+	@Column(name = "first_name")
+	@NotEmpty(message = "*Please provide your first name")
+	private String firstName;
+	@Column(name = "last_name")
+	@NotEmpty(message = "*Please provide your last name")
+	private String lastName;
+	@Column(name = "isadmin")
+	@NotEmpty(message = "*Please choose your role in the system")
+	private Role role;
 
 	public enum Role {STUDENT, ADMIN}
 
-	protected UserEntity(UserBuilder userBuilder) {
-		this.id = userBuilder.id;
-		this.email = userBuilder.email;
-		this.password = userBuilder.password;
-		this.salt = userBuilder.salt;
-		this.firstName = userBuilder.firstName;
-		this.lastName = userBuilder.lastName;
-		this.role = userBuilder.role;
-	}
-
-	public static UserBuilder builder() {
-		return new UserBuilder();
-	}
-
-	/*	-	-	-	-	-	-	-	BUILDER -	-	-	-	-	-	-	-	-	*/
-
-	public static class UserBuilder<SELF extends UserBuilder<SELF>> {
-		private Integer id;
-		private String email;
-		private String password;
-		private String salt;
-		private String firstName;
-		private String lastName;
-		private Role role;
-
-		public UserBuilder() {
-		}
-
-		public UserEntity build() {
-			return new UserEntity(this);
-		}
-
-		protected SELF self() {
-			return (SELF) this;
-		}
-
-		public UserBuilder withId(Integer id) {
-			this.id = id;
-			return this;
-		}
-
-		public UserBuilder withEmail(String email) {
-			this.email = email;
-			return this;
-		}
-
-		public UserBuilder withPassword(String password) {
-			this.password = password;
-			return this;
-		}
-
-		public UserBuilder withSalt(String salt) {
-			this.salt = salt;
-			return this;
-		}
-
-		public UserBuilder withFirstName(String firstName) {
-			this.firstName = firstName;
-			return this;
-		}
-
-		public UserBuilder withLastName(String lastName) {
-			this.lastName = lastName;
-			return this;
-		}
-
-		public UserBuilder withRole(Role role) {
-			this.role = role;
-			return this;
-		}
-	}
-
-	/*	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	*/
-
-	public Integer getId() {
-		return id;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public String getSalt() {
-		return salt;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public Role getRole() {
-		return role;
-	}
-
-	@Override
-	public String toString() {
-		return "User{" +
-				"id=" + id +
-				", email='" + email + '\'' +
-				", password='" + password + '\'' +
-				", firstName='" + firstName + '\'' +
-				", lastName='" + lastName + '\'' +
-				", role=" + role +
-				'}';
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-		UserEntity userEntity = (UserEntity) o;
-		return id.equals(userEntity.id) &&
-				email.equals(userEntity.email) &&
-				password.equals(userEntity.password) &&
-				firstName.equals(userEntity.firstName) &&
-				lastName.equals(userEntity.lastName) &&
-				role == userEntity.role;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, email, password, firstName, lastName, role);
-	}
 }
-
-
