@@ -1,7 +1,7 @@
-package go.univer.dao.impl;
+package go.univer.repository.impl;
 
-import go.univer.dao.CrudDao;
-import go.univer.dao.DBConnector;
+import go.univer.repository.CrudDao;
+import go.univer.repository.DBConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

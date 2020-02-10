@@ -1,4 +1,4 @@
-package go.univer.dao;
+package go.univer.repository;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

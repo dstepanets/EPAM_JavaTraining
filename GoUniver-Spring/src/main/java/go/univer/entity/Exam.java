@@ -27,6 +27,8 @@ public class Exam {
 	@Column(name = "subject")
 	@NotEmpty
 	private String subject;
+//	location		TODO add location and date?
+//	date
 	private int mark;
 
 }

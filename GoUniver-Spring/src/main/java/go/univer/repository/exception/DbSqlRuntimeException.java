@@ -1,4 +1,4 @@
-package go.univer.dao.exception;
+package go.univer.repository.exception;
 
 public class DbSqlRuntimeException extends RuntimeException {
 	public DbSqlRuntimeException() {

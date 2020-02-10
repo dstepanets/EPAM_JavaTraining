@@ -1,4 +1,4 @@
-package go.univer.dao;
+package go.univer.repository;
 
 import go.univer.entity.users.UserEntity;
 

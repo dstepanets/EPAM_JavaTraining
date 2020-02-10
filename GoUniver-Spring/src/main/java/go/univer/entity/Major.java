@@ -30,10 +30,10 @@ public class Major {
 	@NotEmpty
 	private String title;
 	@ManyToMany
-	@JoinTable(name = "major_exams", joinColumns = @JoinColumn(name = "major_id"), inverseJoinColumns = @JoinColumn(name = "exam_id"))
+	@JoinTable(name = "major_exams", joinColumns = @JoinColumn(name = "major_id"),
+			inverseJoinColumns = @JoinColumn(name = "exam_id"))
 	private List<Exam> exams;
-	private int capacity;            // TODO Add to table
+	@Column(name = "capacity")
+	private int capacity;
 //	private List<User> applicants;
-
-
 }

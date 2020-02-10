@@ -1,9 +1,9 @@
-package go.univer.dao.impl;
+package go.univer.repository.impl;
 
-import go.univer.dao.DBConnector;
-import go.univer.dao.Page;
-import go.univer.dao.PaginalList;
-import go.univer.dao.UserDao;
+import go.univer.repository.DBConnector;
+import go.univer.repository.Page;
+import go.univer.repository.PaginalList;
+import go.univer.repository.UserDao;
 import go.univer.entity.users.UserEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -113,28 +113,25 @@ public class UserDaoImpl extends AbstractCrudDao<UserEntity> implements UserDao 
 
 	protected UserEntity mapResultSetToEntity(ResultSet resultSet) throws SQLException {
 		return UserEntity.builder()
-				.withId(resultSet.getInt("id"))
-				.withEmail(resultSet.getString("email"))
-				.withPassword(resultSet.getString("password"))
-				.withSalt(resultSet.getString("salt"))
-				.withFirstName(resultSet.getString("first_name"))
-				.withLastName(resultSet.getString("last_name"))
-				.withRole(UserEntity.Role.values()[resultSet.getInt("isadmin")])
+				.id(resultSet.getInt("id"))
+				.email(resultSet.getString("email"))
+				.password(resultSet.getString("password"))
+				.salt(resultSet.getString("salt"))
+				.firstName(resultSet.getString("first_name"))
+				.lastName(resultSet.getString("last_name"))
+				.role(UserEntity.Role.values()[resultSet.getInt("isadmin")])
 				.build();
 	}
 
-
-	//	TODO tmp
-	public void populateDefaultPasswords(String encryptedPass) {
-		final String sql = "UPDATE users SET password=?;";
-		try (final PreparedStatement preparedStatement = DBConnector.getConnection().prepareStatement(sql)) {
-			preparedStatement.setString(1, encryptedPass);
-			preparedStatement.executeUpdate();
-			LOGGER.debug(String.format("Executing user update query: ['%s']", preparedStatement));
-		} catch (SQLException e) {
-			LOGGER.error(e);
-		}
-	}
-
-
+//
+//	public void populateDefaultPasswords(String encryptedPass) {
+//		final String sql = "UPDATE users SET password=?;";
+//		try (final PreparedStatement preparedStatement = DBConnector.getConnection().prepareStatement(sql)) {
+//			preparedStatement.setString(1, encryptedPass);
+//			preparedStatement.executeUpdate();
+//			LOGGER.debug(String.format("Executing user update query: ['%s']", preparedStatement));
+//		} catch (SQLException e) {
+//			LOGGER.error(e);
+//		}
+//	}
 }

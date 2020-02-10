@@ -1,8 +1,8 @@
 package go.univer.service.impl;
 
-import go.univer.dao.Page;
-import go.univer.dao.PaginalList;
-import go.univer.dao.UserDao;
+import go.univer.repository.Page;
+import go.univer.repository.PaginalList;
+import go.univer.repository.UserDao;
 import go.univer.domain.User;
 import go.univer.entity.users.UserEntity;
 import go.univer.mapper.Mapper;

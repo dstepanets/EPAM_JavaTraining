@@ -1,4 +1,4 @@
-package go.univer.dao;
+package go.univer.repository;
 
 public class Page {
 	private int pageNum;

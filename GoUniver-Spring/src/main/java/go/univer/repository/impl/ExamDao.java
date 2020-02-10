@@ -1,6 +1,6 @@
-package go.univer.dao.impl;
+package go.univer.repository.impl;
 
-import go.univer.dao.DBConnector;
+import go.univer.repository.DBConnector;
 import go.univer.entity.Exam;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

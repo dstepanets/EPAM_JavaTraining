@@ -2,69 +2,32 @@ package go.univer.entity.users;
 
 import go.univer.entity.Exam;
 import go.univer.entity.Major;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.List;
 
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity(name = "student")
+@Table(name = "users")
 public class StudentEntity extends UserEntity {
-	private final List<Exam> examsPassed;
-	private final List<Major> majorsApplied;
-	private final int schoolScore;
-
-	protected StudentEntity(StudentBuilder builder) {
-		super(builder);
-		this.examsPassed = builder.examsPassed;
-		this.majorsApplied = builder.majorsApplied;
-		this.schoolScore = builder.schoolScore;
-	}
-
-
-
-	/*	-	-	-	-	-	-	-	BUILDER -	-	-	-	-	-	-	-	-	*/
-
-	public static class StudentBuilder extends UserBuilder<StudentBuilder> {
-		private List<Exam> examsPassed;
-		private List<Major> majorsApplied;
-		private int schoolScore;
-
-		public StudentBuilder() {
-		}
-
-		@Override
-		public UserEntity build() {
-			return new StudentEntity(this);
-		}
-
-		@Override
-		protected StudentBuilder self() {
-			return this;
-		}
-
-		public StudentBuilder withExamsPassed(List<Exam> examsPassed) {
-			this.examsPassed = examsPassed;
-			return this;
-		}
-
-		public StudentBuilder withMajorsApplied(List<Major> majorsApplied) {
-			this.majorsApplied = majorsApplied;
-			return this;
-		}
-
-		public StudentBuilder withSchoolScore(int schoolScore) {
-			this.schoolScore = schoolScore;
-			return this;
-		}
-	}
-
-	/*	-	-	-	-	-	-	-	BUILDER -	-	-	-	-	-	-	-	-	*/
-
-	@Override
-	public String toString() {
-		return "Student{" +
-				"examsPassed=" + examsPassed +
-				", majorsApplied=" + majorsApplied +
-				", schoolScore=" + schoolScore +
-				"} " + super.toString();
-	}
-
-
+	@ManyToMany
+	@JoinTable(name = "marks", joinColumns = @JoinColumn(name = "student_id"),
+			inverseJoinColumns = @JoinColumn(name = "id"))
+	private List<Exam> examsPassed;
+	@OneToMany
+	@JoinTable(name = "majors", joinColumns = @JoinColumn(name = "id"))
+	private List<Major> majorsApplied;
+	private int schoolScore;	//	TODO add to DB or remove completely
 }

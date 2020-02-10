@@ -1,7 +1,7 @@
 package go.univer.injector;
 
-import go.univer.dao.UserDao;
-import go.univer.dao.impl.UserDaoImpl;
+import go.univer.repository.UserDao;
+import go.univer.repository.impl.UserDaoImpl;
 import go.univer.entity.users.UserEntity;
 import go.univer.mapper.Mapper;
 import go.univer.mapper.UserMapper;
