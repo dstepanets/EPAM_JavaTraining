@@ -3,17 +3,24 @@ package go.univer.controller.command;
 import go.univer.entity.users.UserEntity;
 import go.univer.service.UserService;
 
+import javax.servlet.ServletException;
+import java.io.IOException;
 import java.util.Objects;
 
-public class RegisterFrontCommand extends FrontCommand {
+public class RegisterCommand extends FrontCommand {
 	private final UserService userService;
 
-	public RegisterFrontCommand(UserService userService) {
+	public RegisterCommand(UserService userService) {
 		this.userService = userService;
 	}
 
 	@Override
-	public void process() {
+	protected void processGet() throws ServletException, IOException {
+		forward("register");
+	}
+
+	@Override
+	protected void processPost() throws ServletException, IOException {
 		//Session
 		final String email = (String) req.getAttribute("email");
 		final String firstName = (String) req.getAttribute("firstName");
@@ -36,4 +43,5 @@ public class RegisterFrontCommand extends FrontCommand {
 
 //		return "view/login.jsp";
 	}
+
 }

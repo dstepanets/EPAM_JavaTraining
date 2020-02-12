@@ -7,5 +7,6 @@ public class HomeCommand extends FrontCommand {
 	@Override
 	public void process() throws ServletException, IOException {
 		forward("home");
+//		redirect("home");
 	}
 }

@@ -6,16 +6,20 @@
 
 	<servlet>
 		<servlet-name>front-controller</servlet-name>
-		<servlet-class>
-			go.univer.controller.FrontController
-		</servlet-class>
+		<servlet-class>go.univer.controller.FrontController</servlet-class>
 	</servlet>
+
 	<servlet-mapping>
 		<servlet-name>front-controller</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 
-	<servlet>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>/assets/*</url-pattern>
+	</servlet-mapping>
+
+<!--	<servlet>
 		<servlet-name>loginServlet</servlet-name>
 		<servlet-class>go.univer.controller.LoginServlet</servlet-class>
 	</servlet>
@@ -31,7 +35,7 @@
 	<servlet-mapping>
 		<servlet-name>usersServlet</servlet-name>
 		<url-pattern>/users1</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping>-->
 
 
 	<filter>
@@ -46,7 +50,11 @@
 
 
 	<welcome-file-list>
-		<welcome-file>/views/home.jsp</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
+
+	<error-page>
+		<location>/views/error.jsp</location>
+	</error-page>
 
 </web-app>

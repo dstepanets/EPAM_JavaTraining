@@ -2,7 +2,7 @@ package go.univer.controller.command;
 
 import javax.servlet.http.HttpSession;
 
-public class LogoutFrontCommand extends FrontCommand {
+public class LogoutCommand extends FrontCommand {
 	@Override
 	public void process() {
 		final HttpSession session = req.getSession();
