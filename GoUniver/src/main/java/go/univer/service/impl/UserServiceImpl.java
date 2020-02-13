@@ -75,14 +75,14 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<User> findAll(String strPageNum) {
+	public PaginalList<User> findAll(String strPageNum) {
 		int pageNum = parsePageNumber(strPageNum);
 
 		PaginalList<UserEntity> userEntityPaginalList = userDao.findAll(new Page(pageNum, USERS_PER_PAGE));
-
-		return userEntityPaginalList.getItems().stream()
+		List<User> userList = userEntityPaginalList.getItems().stream()
 				.map(userMapper::mapEntityToDomain)
 				.collect(Collectors.toList());
+		return new PaginalList<User>(userList, userEntityPaginalList.getPage(), userEntityPaginalList.getMaxPageNumber());
 	}
 
 	@Override

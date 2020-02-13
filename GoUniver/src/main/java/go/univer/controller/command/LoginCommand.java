@@ -22,7 +22,7 @@ public class LoginCommand extends FrontCommand {
 	@Override
 	protected void processGet() throws ServletException, IOException {
 		req.getServletContext().setAttribute("loginError", null);
-		forward("login");
+		forward("views/login.jsp");
 	}
 
 	@Override
@@ -32,18 +32,13 @@ public class LoginCommand extends FrontCommand {
 
 		req.getServletContext().setAttribute("loginError", null);
 
-		try (PrintWriter writer = resp.getWriter()) {
-			writer.println("<p>Email: " + email + " |Pass: " + password + "<p>");
-			if (userService.login(email, password).isPresent()) {
-				writer.println("Login success");
-				redirect("users");
-			} else {
-				req.getServletContext().setAttribute("loginError", "Wrong credentials :(");
-				forward("login");
-			}
-		} catch (/*ServletException |*/ IOException e) {
-			LOG.error(e);
+		if (userService.login(email, password).isPresent()) {
+			redirect("admin/users");
+		} else {
+			req.getServletContext().setAttribute("loginError", "Wrong credentials :(");
+			forward("views/login.jsp");
 		}
+
 
 /*			final String email = (String) req.getAttribute("email");
 			final String password = (String) req.getAttribute("password");
@@ -56,5 +51,20 @@ public class LoginCommand extends FrontCommand {
 //			return "view/profile.jsp";
 */
 	}
+
+	//	@Override
+//	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//
+//		final User user = (User) req.getSession().getAttribute("user");
+//		final Role role = new ArrayList<>(user.getRoles()).get(0);
+//		//Better to use filters
+//		if (role != Role.ADMIN) {
+//			req.getRequestDispatcher("view/not_admin.jsp").forward(req, resp);
+//		}
+//		final List<User> users = userService.findAll();
+//		req.setAttribute("users", users);
+//
+//		req.getRequestDispatcher("view/users.jsp").forward(req, resp);
+//	}
 
 }

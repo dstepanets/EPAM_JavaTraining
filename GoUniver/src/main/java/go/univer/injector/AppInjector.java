@@ -5,6 +5,7 @@ import go.univer.controller.command.HomeCommand;
 import go.univer.controller.command.LoginCommand;
 import go.univer.controller.command.LogoutCommand;
 import go.univer.controller.command.RegisterCommand;
+import go.univer.controller.command.admin.ListUsersCommand;
 import go.univer.dao.UserDao;
 import go.univer.dao.impl.UserDaoImpl;
 import go.univer.domain.User;
@@ -36,6 +37,7 @@ public class AppInjector {
 		COMMANDS.put("/login", new LoginCommand(USER_SERVICE));
 		COMMANDS.put("/register", new RegisterCommand(USER_SERVICE));
 		COMMANDS.put("/logout", new LogoutCommand());
+		COMMANDS.put("/admin/users", new ListUsersCommand(USER_SERVICE));
 	}
 
 	private AppInjector() {

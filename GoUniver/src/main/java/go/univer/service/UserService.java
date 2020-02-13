@@ -1,9 +1,9 @@
 package go.univer.service;
 
+import go.univer.dao.PaginalList;
 import go.univer.domain.User;
 import go.univer.entity.users.UserEntity;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
@@ -11,6 +11,7 @@ public interface UserService {
 
 	Optional<UserEntity> login(String email, String password);
 
-	List<User> findAll(String strPageNum);
+	PaginalList<User> findAll(String strPageNum);
+
 	int getUsersCount();
 }

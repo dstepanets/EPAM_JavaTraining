@@ -16,7 +16,7 @@ public class RegisterCommand extends FrontCommand {
 
 	@Override
 	protected void processGet() throws ServletException, IOException {
-		forward("register");
+		forward("views/register.jsp");
 	}
 
 	@Override

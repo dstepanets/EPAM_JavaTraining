@@ -17,12 +17,16 @@ public class DBConnector {
 	private static HikariDataSource dataSource;
 
 	public static Connection getConnection() throws SQLException {
-		setConfigs(DEFAULT_POPERTIES_FILE_PATH);
+		if (dataSource == null) {
+			setConfigs(DEFAULT_POPERTIES_FILE_PATH);
+		}
 		return dataSource.getConnection();
 	}
 
 	public static Connection getConnection(String propertiesFilePath) throws SQLException {
-		setConfigs(propertiesFilePath);
+		if (dataSource == null) {
+			setConfigs(propertiesFilePath);
+		}
 		return dataSource.getConnection();
 	}
 

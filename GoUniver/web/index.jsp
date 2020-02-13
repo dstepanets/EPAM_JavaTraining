@@ -5,6 +5,7 @@
   Time: 22:35
   To change this template use File | Settings | File Templates.
 --%>
+${pageContext.setAttribute("title", "GoUniver")}
 <%@ include file="views/includes/header.jsp" %>
 
 <body>

@@ -76,10 +76,10 @@ public class UserDaoImpl extends AbstractCrudDao<UserEntity> implements UserDao 
 	@Override
 	public PaginalList<UserEntity> findAll(Page page) {
 		List<UserEntity> userEntities = new ArrayList<>();
-		int maxPageNum = (int) (count() / page.getItemsPerPage() + 1);
+		int maxPageNum = (count() / page.getItemsPerPage() + 1);
 		try (final PreparedStatement preparedStatement = DBConnector.getConnection().prepareStatement(FIND_ALL_PAGINAL_QUERY)) {
 			preparedStatement.setInt(1, (page.getPageNum() - 1) * page.getItemsPerPage());
-			preparedStatement.setInt(1, page.getItemsPerPage());
+			preparedStatement.setInt(2, page.getItemsPerPage());
 			try (final ResultSet resultSet = preparedStatement.executeQuery()) {
 				while (resultSet.next()) {
 					final UserEntity userEntity = mapResultSetToEntity(resultSet);

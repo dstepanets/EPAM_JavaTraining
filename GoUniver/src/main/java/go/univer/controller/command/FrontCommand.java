@@ -44,13 +44,13 @@ public abstract class FrontCommand {
 	}
 
 	protected void forward(String target) throws ServletException, IOException {
-		target = String.format("%s/views/%s.jsp", req.getContextPath(), target);
+		target = String.format("%s/%s", req.getContextPath(), target);
 		RequestDispatcher dispatcher = context.getRequestDispatcher(target);
 		dispatcher.forward(req, resp);
 	}
 
 	protected void redirect(String target) throws IOException {
-		target = String.format("%s/views/%s.jsp", req.getContextPath(), target);
+		target = String.format("%s/%s", req.getContextPath(), target);
 		resp.sendRedirect(target);
 	}
 

@@ -6,7 +6,7 @@ import java.io.IOException;
 public class HomeCommand extends FrontCommand {
 	@Override
 	public void process() throws ServletException, IOException {
-		forward("home");
+		forward("views/home.jsp");
 //		redirect("home");
 	}
 }

@@ -18,7 +18,7 @@ public abstract class AbstractCrudDao<E> implements CrudDao<E> {
 	private static final BiConsumer<PreparedStatement, Integer> INT_PARAM_SETTER = (preparedStatement, integer) -> {
 		try {
 			preparedStatement.setInt(1, integer);
-			// preparedStatement.setObject();	?
+			// preparedStatement.setObject(); ?
 		} catch (SQLException e) {
 			LOGGER.error(e);
 		}
