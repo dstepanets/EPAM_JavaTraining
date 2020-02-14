@@ -19,6 +19,7 @@ ${pageContext.setAttribute("homeButtonActive", "active")}
             <p>Web Application Context Path = ${pageContext.request.contextPath}</p>
             <p>Real Path = ${pageContext.request.getRealPath("")}</p>
             <p>Path Info = ${pageContext.request.pathInfo}</p>
+            <p>Locale: <fmt:message key="tmp.loc"/></p>
         </div>
     </section>
 </main>

@@ -13,13 +13,21 @@ ${pageContext.setAttribute("registerButtonActive", "active")}
     <section class="clean-block clean-form dark" style="height: 700px;">
         <div class="container">
             <div class="block-heading" style="padding: 20px;height: 40px;">
-                <h2 class="text-info">Registration</h2>
+                <h2 class="text-info"><fmt:message key="nav.register"/></h2>
             </div>
             <form>
-                <div class="form-group"><label for="email">Email</label><input class="form-control item" type="email" id="email"></div>
-                <div class="form-group"><label for="name">First Name</label><input class="form-control item" type="text" id="name"><label for="name">Last Name</label><input class="form-control item" type="text" id="name"></div>
-                <div class="form-group"><label for="password">Password</label><input class="form-control item" type="password" id="password"><label for="password">Confirm Password</label><input class="form-control item" type="password" id="password"></div><button class="btn btn-primary btn-block"
-                                                                                                                                                                                                                                                                        type="submit">Sign Up</button></form>
+                <div class="form-group">
+                    <label for="email"><fmt:message key="user.email"/></label><input class="form-control item" type="email" id="email">
+                </div>
+                <div class="form-group">
+                    <label for="firstName"><fmt:message key="user.firstName"/></label><input class="form-control item" type="text" id="firstName">
+                    <label for="lastName"><fmt:message key="user.lastName"/></label><input class="form-control item" type="text" id="lastName">
+                </div>
+                <div class="form-group">
+                    <label for="password1"><fmt:message key="user.password"/></label><input class="form-control item" type="password" id="password1">
+                    <label for="password2"><fmt:message key="nav.register.repeatPass"/></label><input class="form-control item" type="password" id="password2">
+                </div>
+                <button class="btn btn-primary btn-block" type="submit"><fmt:message key="nav.register"/></button></form>
         </div>
     </section>
 </main>

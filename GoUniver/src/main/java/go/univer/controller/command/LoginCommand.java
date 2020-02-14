@@ -1,15 +1,11 @@
 package go.univer.controller.command;
 
-import go.univer.entity.users.UserEntity;
 import go.univer.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Optional;
 
 public class LoginCommand extends FrontCommand {
 	private static final Logger LOG = LogManager.getLogger(LoginCommand.class);
@@ -21,7 +17,7 @@ public class LoginCommand extends FrontCommand {
 
 	@Override
 	protected void processGet() throws ServletException, IOException {
-		req.getServletContext().setAttribute("loginError", null);
+		req.getServletContext().setAttribute("loginError", false);
 		forward("views/login.jsp");
 	}
 
@@ -30,12 +26,12 @@ public class LoginCommand extends FrontCommand {
 		final String email = req.getParameter("email");
 		final String password = req.getParameter("password");
 
-		req.getServletContext().setAttribute("loginError", null);
+		req.getServletContext().setAttribute("loginError", false);
 
 		if (userService.login(email, password).isPresent()) {
 			redirect("admin/users");
 		} else {
-			req.getServletContext().setAttribute("loginError", "Wrong credentials :(");
+			req.getServletContext().setAttribute("loginError", true);
 			forward("views/login.jsp");
 		}
 

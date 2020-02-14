@@ -17,7 +17,7 @@
 ${pageContext.setAttribute("root", pageContext.request.contextPath)}
 
 <!DOCTYPE html>
-<html lang=${sessionScope.locale}>
+<html lang="${sessionScope.locale}">
 
     <head>
         <meta charset="utf-8">

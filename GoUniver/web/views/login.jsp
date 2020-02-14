@@ -13,22 +13,24 @@ ${pageContext.setAttribute("loginButtonActive", "active")}
     <section class="clean-block clean-form dark" style="height: 700px;">
         <div class="container">
             <div class="block-heading" style="padding: 20px;height: 40px;">
-                <h2 class="text-info">Log In</h2>
+                <h2 class="text-info"><fmt:message key="nav.log_in"/></h2>
             </div>
-            <form action="${pageContext.request.contextPath}/login" method="post">
+            <form action="${root}/login" method="post">
                 <div class="form-group">
-                    <label for="email">Email</label>
+                    <label for="email"><fmt:message key="user.email"/></label>
                     <input class="form-control item" type="email" name="email" id="email" required="required">
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
+                    <label for="password"><fmt:message key="user.password"/></label>
                     <input class="form-control" type="password" name="password" id="password" required="required">
                 </div>
-                <button class="btn btn-primary btn-block" type="submit">Log In</button>
+                <button class="btn btn-primary btn-block" type="submit"><fmt:message key="nav.log_in"/></button>
             </form>
         </div>
         <div>
-            <p align="center" style="color:darkred"> ${loginError} </p>
+            <c:if test="${loginError == true}">
+                <p align="center" style="color:darkred"><fmt:message key="nav.log_in.err"/></p>
+            </c:if>
         </div>
     </section>
 </main>
