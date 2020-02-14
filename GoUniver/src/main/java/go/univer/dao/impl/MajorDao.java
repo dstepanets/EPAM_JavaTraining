@@ -5,6 +5,7 @@ import go.univer.entity.Major;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,8 +26,9 @@ public class MajorDao extends AbstractCrudDao<Major> {
 
 	@Override
 	public List<Major> findAll() {
-		try (final PreparedStatement preparedStatement = DBConnector.getConnection().prepareStatement(FIND_ALL_QUERY)) {
-			try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+		try (final Connection conn = DBConnector.getConnection();
+			 final PreparedStatement statement = conn.prepareStatement(FIND_ALL_QUERY)) {
+			try (final ResultSet resultSet = statement.executeQuery()) {
 				List<Major> majors = new ArrayList<>();
 				while (resultSet.next()) {
 					final Major major = mapResultSetToEntity(resultSet);
@@ -43,9 +45,10 @@ public class MajorDao extends AbstractCrudDao<Major> {
 
 	@Override
 	public void save(Major major) {
-		try (final PreparedStatement preparedStatement = DBConnector.getConnection().prepareStatement(SAVE_MAJOR_QUERY)) {
-			preparedStatement.setString(1, major.getTitle());
-			try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+		try (final Connection conn = DBConnector.getConnection();
+			 final PreparedStatement statement = conn.prepareStatement(SAVE_MAJOR_QUERY)) {
+			statement.setString(1, major.getTitle());
+			try (final ResultSet resultSet = statement.executeQuery()) {
 				LOGGER.debug(String.format("Saving new major: %s", major));
 			}
 		} catch (SQLException e) {
@@ -55,11 +58,12 @@ public class MajorDao extends AbstractCrudDao<Major> {
 
 	@Override
 	public void update(Major major) {
-		try (final PreparedStatement preparedStatement = DBConnector.getConnection().prepareStatement(UPDATE_MAJOR_QUERY)) {
-			preparedStatement.setInt(1, major.getId());
-			preparedStatement.setString(2, major.getTitle());
-			try (final ResultSet resultSet = preparedStatement.executeQuery()) {
-				LOGGER.debug(String.format("Executing major update query: ['%s']", preparedStatement));
+		try (final Connection conn = DBConnector.getConnection();
+			 final PreparedStatement statement = conn.prepareStatement(UPDATE_MAJOR_QUERY)) {
+			statement.setInt(1, major.getId());
+			statement.setString(2, major.getTitle());
+			try (final ResultSet resultSet = statement.executeQuery()) {
+				LOGGER.debug(String.format("Executing major update query: ['%s']", statement));
 			}
 		} catch (SQLException e) {
 			LOGGER.error(e);

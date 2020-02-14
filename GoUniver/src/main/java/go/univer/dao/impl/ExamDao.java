@@ -5,6 +5,7 @@ import go.univer.entity.Exam;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,8 +26,9 @@ public class ExamDao extends AbstractCrudDao<Exam> {
 
 	@Override
 	public List<Exam> findAll() {
-		try (final PreparedStatement preparedStatement = DBConnector.getConnection().prepareStatement(FIND_ALL_QUERY)) {
-			try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+		try (final Connection conn = DBConnector.getConnection();
+			 final PreparedStatement statement = conn.prepareStatement(FIND_ALL_QUERY)) {
+			try (final ResultSet resultSet = statement.executeQuery()) {
 				List<Exam> exams = new ArrayList<>();
 				while (resultSet.next()) {
 					final Exam exam = mapResultSetToEntity(resultSet);
@@ -42,9 +44,10 @@ public class ExamDao extends AbstractCrudDao<Exam> {
 
 	@Override
 	public void save(Exam exam) {
-		try (final PreparedStatement preparedStatement = DBConnector.getConnection().prepareStatement(SAVE_EXAM_QUERY)) {
-			preparedStatement.setString(1, exam.getSubject());
-			try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+		try (final Connection conn = DBConnector.getConnection();
+			 final PreparedStatement statement = conn.prepareStatement(SAVE_EXAM_QUERY)) {
+			statement.setString(1, exam.getSubject());
+			try (final ResultSet resultSet = statement.executeQuery()) {
 				LOGGER.debug(String.format("Saving new exam: %s", exam));
 			}
 		} catch (SQLException e) {
@@ -54,11 +57,12 @@ public class ExamDao extends AbstractCrudDao<Exam> {
 
 	@Override
 	public void update(Exam exam) {
-		try (final PreparedStatement preparedStatement = DBConnector.getConnection().prepareStatement(UPDATE_EXAM_QUERY)) {
-			preparedStatement.setInt(1, exam.getId());
-			preparedStatement.setString(2, exam.getSubject());
-			try (final ResultSet resultSet = preparedStatement.executeQuery()) {
-				LOGGER.debug(String.format("Executing exams update query: ['%s']", preparedStatement));
+		try (final Connection conn = DBConnector.getConnection();
+			 final PreparedStatement statement = conn.prepareStatement(UPDATE_EXAM_QUERY)) {
+			statement.setInt(1, exam.getId());
+			statement.setString(2, exam.getSubject());
+			try (final ResultSet resultSet = statement.executeQuery()) {
+				LOGGER.debug(String.format("Executing exams update query: ['%s']", statement));
 			}
 		} catch (SQLException e) {
 			LOGGER.error(e);

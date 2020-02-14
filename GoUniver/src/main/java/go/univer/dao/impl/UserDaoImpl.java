@@ -8,6 +8,7 @@ import go.univer.entity.users.UserEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,7 +21,6 @@ public class UserDaoImpl extends AbstractCrudDao<UserEntity> implements UserDao 
 	private static final Logger LOGGER = LogManager.getLogger(UserDaoImpl.class);
 
 	private static final String FIND_BY_EMAIL_QUERY = "SELECT * FROM users WHERE email=?;";
-	private static final String FIND_ALL_QUERY = "SELECT * FROM users";
 	private static final String FIND_ALL_PAGINAL_QUERY = "SELECT * FROM users LIMIT ?, ?;";
 	private static final String SAVE_USER_QUERY =
 			"INSERT INTO users (email, password, salt, first_name, last_name, isadmin) " +
@@ -41,14 +41,15 @@ public class UserDaoImpl extends AbstractCrudDao<UserEntity> implements UserDao 
 
 	@Override
 	public void save(UserEntity userEntity) {
-		try (final PreparedStatement preparedStatement = DBConnector.getConnection().prepareStatement(SAVE_USER_QUERY)) {
-			preparedStatement.setString(1, userEntity.getEmail());
-			preparedStatement.setString(2, userEntity.getPassword());
-			preparedStatement.setString(3, userEntity.getSalt());
-			preparedStatement.setString(4, userEntity.getFirstName());
-			preparedStatement.setString(5, userEntity.getLastName());
-			preparedStatement.setInt(6, userEntity.getRole().ordinal());
-			try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+		try (final Connection conn = DBConnector.getConnection();
+			 final PreparedStatement statement = conn.prepareStatement(SAVE_USER_QUERY)) {
+			statement.setString(1, userEntity.getEmail());
+			statement.setString(2, userEntity.getPassword());
+			statement.setString(3, userEntity.getSalt());
+			statement.setString(4, userEntity.getFirstName());
+			statement.setString(5, userEntity.getLastName());
+			statement.setInt(6, userEntity.getRole().ordinal());
+			try (final ResultSet resultSet = statement.executeQuery()) {
 				LOGGER.debug(String.format("Saving new user: %s", userEntity));
 			}
 		} catch (SQLException e) {
@@ -57,30 +58,14 @@ public class UserDaoImpl extends AbstractCrudDao<UserEntity> implements UserDao 
 	}
 
 	@Override
-	public List<UserEntity> findAll() {
-		try (final PreparedStatement preparedStatement = DBConnector.getConnection().prepareStatement(FIND_ALL_QUERY)) {
-			try (final ResultSet resultSet = preparedStatement.executeQuery()) {
-				List<UserEntity> userEntities = new ArrayList<>();
-				while (resultSet.next()) {
-					final UserEntity userEntity = mapResultSetToEntity(resultSet);
-					userEntities.add(userEntity);
-				}
-				return userEntities;
-			}
-		} catch (SQLException e) {
-			LOGGER.error(e);
-		}
-		return Collections.emptyList();
-	}
-
-	@Override
 	public PaginalList<UserEntity> findAll(Page page) {
 		List<UserEntity> userEntities = new ArrayList<>();
 		int maxPageNum = (count() / page.getItemsPerPage() + 1);
-		try (final PreparedStatement preparedStatement = DBConnector.getConnection().prepareStatement(FIND_ALL_PAGINAL_QUERY)) {
-			preparedStatement.setInt(1, (page.getPageNum() - 1) * page.getItemsPerPage());
-			preparedStatement.setInt(2, page.getItemsPerPage());
-			try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+		try (final Connection conn = DBConnector.getConnection();
+			 final PreparedStatement statement = conn.prepareStatement(FIND_ALL_PAGINAL_QUERY)) {
+			statement.setInt(1, (page.getPageNum() - 1) * page.getItemsPerPage());
+			statement.setInt(2, page.getItemsPerPage());
+			try (final ResultSet resultSet = statement.executeQuery()) {
 				while (resultSet.next()) {
 					final UserEntity userEntity = mapResultSetToEntity(resultSet);
 					userEntities.add(userEntity);
@@ -95,16 +80,17 @@ public class UserDaoImpl extends AbstractCrudDao<UserEntity> implements UserDao 
 
 	@Override
 	public void update(UserEntity userEntity) {
-		try (final PreparedStatement preparedStatement = DBConnector.getConnection().prepareStatement(UPDATE_USER_QUERY)) {
-			preparedStatement.setString(1, userEntity.getEmail());
-			preparedStatement.setString(2, userEntity.getPassword());
-			preparedStatement.setString(3, userEntity.getSalt());
-			preparedStatement.setString(4, userEntity.getFirstName());
-			preparedStatement.setString(5, userEntity.getLastName());
-			preparedStatement.setInt(6, userEntity.getRole().ordinal());
-			preparedStatement.setInt(7, userEntity.getId());
-			try (final ResultSet resultSet = preparedStatement.executeQuery()) {
-				LOGGER.debug(String.format("Executing user update query: ['%s']", preparedStatement));
+		try (final Connection conn = DBConnector.getConnection();
+			 final PreparedStatement statement = conn.prepareStatement(UPDATE_USER_QUERY)) {
+			statement.setString(1, userEntity.getEmail());
+			statement.setString(2, userEntity.getPassword());
+			statement.setString(3, userEntity.getSalt());
+			statement.setString(4, userEntity.getFirstName());
+			statement.setString(5, userEntity.getLastName());
+			statement.setInt(6, userEntity.getRole().ordinal());
+			statement.setInt(7, userEntity.getId());
+			try (final ResultSet resultSet = statement.executeQuery()) {
+				LOGGER.debug(String.format("Executing user update query: ['%s']", statement));
 			}
 		} catch (SQLException e) {
 			LOGGER.error(e);
@@ -127,10 +113,11 @@ public class UserDaoImpl extends AbstractCrudDao<UserEntity> implements UserDao 
 	//	TODO tmp
 	public void populateDefaultPasswords(String encryptedPass) {
 		final String sql = "UPDATE users SET password=?;";
-		try (final PreparedStatement preparedStatement = DBConnector.getConnection().prepareStatement(sql)) {
-			preparedStatement.setString(1, encryptedPass);
-			preparedStatement.executeUpdate();
-			LOGGER.debug(String.format("Executing user update query: ['%s']", preparedStatement));
+		try (final Connection conn = DBConnector.getConnection();
+			 final PreparedStatement statement = conn.prepareStatement(sql)) {
+			statement.setString(1, encryptedPass);
+			statement.executeUpdate();
+			LOGGER.debug(String.format("Executing user update query: ['%s']", statement));
 		} catch (SQLException e) {
 			LOGGER.error(e);
 		}

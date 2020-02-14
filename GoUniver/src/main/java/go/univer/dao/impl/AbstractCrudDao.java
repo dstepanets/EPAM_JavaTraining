@@ -2,12 +2,17 @@ package go.univer.dao.impl;
 
 import go.univer.dao.CrudDao;
 import go.univer.dao.DBConnector;
+import go.univer.entity.users.UserEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
@@ -18,7 +23,6 @@ public abstract class AbstractCrudDao<E> implements CrudDao<E> {
 	private static final BiConsumer<PreparedStatement, Integer> INT_PARAM_SETTER = (preparedStatement, integer) -> {
 		try {
 			preparedStatement.setInt(1, integer);
-			// preparedStatement.setObject(); ?
 		} catch (SQLException e) {
 			LOGGER.error(e);
 		}
@@ -35,11 +39,13 @@ public abstract class AbstractCrudDao<E> implements CrudDao<E> {
 	private final String findByIdQuery;
 	private final String countRowsQuery;
 	private final String deleteByIdQuery;
+	private final String findAllQuery;
 
 	protected AbstractCrudDao(String tableName) {
 		findByIdQuery = String.format("SELECT * FROM %s WHERE id=?", tableName);
 		countRowsQuery = String.format("SELECT COUNT(*) FROM %s;", tableName);
 		deleteByIdQuery = String.format("DELETE FROM %s WHERE id=?;", tableName);
+		findAllQuery = String.format("SELECT * FROM %s", tableName);
 	}
 
 	@Override
@@ -48,9 +54,10 @@ public abstract class AbstractCrudDao<E> implements CrudDao<E> {
 	}
 
 	protected <P> Optional<E> findByParam(P param, String findByParamQuery, BiConsumer<PreparedStatement, P> paramSetter) {
-		try (final PreparedStatement preparedStatement = DBConnector.getConnection().prepareStatement(findByParamQuery)) {
-			paramSetter.accept(preparedStatement, param);
-			try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+		try (final Connection conn =  DBConnector.getConnection();
+			 final PreparedStatement statement = conn.prepareStatement(findByParamQuery)) {
+			paramSetter.accept(statement, param);
+			try (final ResultSet resultSet = statement.executeQuery()) {
 				if (resultSet.next()) {
 					return Optional.of(mapResultSetToEntity(resultSet));
 				}
@@ -63,10 +70,11 @@ public abstract class AbstractCrudDao<E> implements CrudDao<E> {
 
 	@Override
 	public void deleteById(Integer id) {
-		try (final PreparedStatement preparedStatement = DBConnector.getConnection().prepareStatement(deleteByIdQuery)) {
-			preparedStatement.setInt(1, id);
-			try (final ResultSet resultSet = preparedStatement.executeQuery()) {
-				LOGGER.debug(String.format("Removing DB entry. Query: ['%s']", preparedStatement));
+		try (final Connection conn = DBConnector.getConnection();
+			 final PreparedStatement statement = conn.prepareStatement(deleteByIdQuery)) {
+			statement.setInt(1, id);
+			try (final ResultSet resultSet = statement.executeQuery()) {
+				LOGGER.debug(String.format("Removing DB entry. Query: ['%s']", statement));
 			}
 		} catch (SQLException e) {
 			LOGGER.error(String.format("[Failed query: '%s' id=%d] %s", deleteByIdQuery, id, e));
@@ -75,8 +83,9 @@ public abstract class AbstractCrudDao<E> implements CrudDao<E> {
 
 	@Override
 	public int count() {
-		try (final PreparedStatement preparedStatement = DBConnector.getConnection().prepareStatement(countRowsQuery)) {
-			try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+		try (final Connection conn = DBConnector.getConnection();
+			final PreparedStatement statement = conn.prepareStatement(countRowsQuery)) {
+			try (final ResultSet resultSet = statement.executeQuery()) {
 				if (resultSet.next()) {
 					return resultSet.getInt(1);
 				}
@@ -85,6 +94,23 @@ public abstract class AbstractCrudDao<E> implements CrudDao<E> {
 			LOGGER.error(String.format("[Failed query: '%s'] %s", countRowsQuery, e));
 		}
 		return 0;
+	}
+
+	public List<E> findAll() {
+		try (final Connection conn = DBConnector.getConnection();
+			 final PreparedStatement statement = conn.prepareStatement(findAllQuery)) {
+			try (final ResultSet resultSet = statement.executeQuery()) {
+				List<E> entities = new ArrayList<>();
+				while (resultSet.next()) {
+					final E entity = mapResultSetToEntity(resultSet);
+					entities.add(entity);
+				}
+				return entities;
+			}
+		} catch (SQLException e) {
+			LOGGER.error(e);
+		}
+		return Collections.emptyList();
 	}
 
 	protected abstract E mapResultSetToEntity(ResultSet resultSet) throws SQLException;
