@@ -23,11 +23,11 @@ public class UserServiceImpl implements UserService {
 
 	private final UserDao userDao;
 	private final PasswordEncryptor passwordEncryptor;
-	private final Validator<UserEntity> userValidator;
+	private final Validator<User> userValidator;
 	private final Mapper<UserEntity, User> userMapper;
 
 	public UserServiceImpl(UserDao userDao, PasswordEncryptor passwordEncryptor,
-						   Validator<UserEntity> userValidator, Mapper<UserEntity, User> userMapper) {
+						   Validator<User> userValidator, Mapper<UserEntity, User> userMapper) {
 		this.userDao = userDao;
 		this.passwordEncryptor = passwordEncryptor;
 		this.userValidator = userValidator;
@@ -35,43 +35,42 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Optional<UserEntity> login(String email, String password) {
+	public Optional<User> login(String email, String password) {
 		try {
-			UserEntity tmpUserEntity = UserEntity.builder().withEmail(email).withPassword(password).build();
-			userValidator.validate(tmpUserEntity);
+			User tmpUser = User.builder().withEmail(email).withPassword(password).build();
+			userValidator.validate(tmpUser);
 		} catch (ValidationException e) {
 			LOG.debug(e);
 			return Optional.empty();
 		}
-		final Optional<UserEntity> user = userDao.findByEmail(email);
-		if (user.isPresent()) {
-			String encryptedPassword = passwordEncryptor.encrypt(password, user.get().getSalt());
-			if (encryptedPassword.equals(user.get().getPassword()))
-				return user;
+		final Optional<UserEntity> userEntity = userDao.findByEmail(email);
+		if (userEntity.isPresent()) {
+			String encryptedPassword = passwordEncryptor.encrypt(password, userEntity.get().getSalt());
+			if (encryptedPassword.equals(userEntity.get().getPassword()))
+				return Optional.of(userMapper.mapEntityToDomain(userEntity.get()));
 		}
 		return Optional.empty();
 	}
 
 	@Override
-	public UserEntity register(UserEntity userEntity) {
-//		TODO Deal with ValidationException
-		userValidator.validate(userEntity);
-		if (userDao.findByEmail(userEntity.getEmail()).isPresent()) {
-			throw new RuntimeException("User with this email was registered already");
+	public User register(User user) throws ValidationException {
+		userValidator.validate(user);
+		if (userDao.findByEmail(user.getEmail()).isPresent()) {
+			throw new ValidationException("User with this email was registered already");
 		}
 		final String salt = passwordEncryptor.generateStringSalt();
-		final String encryptedPass = passwordEncryptor.encrypt(userEntity.getPassword(), salt);
+		final String encryptedPass = passwordEncryptor.encrypt(user.getPassword(), salt);
 		UserEntity newUserEntity = UserEntity.builder()
-				.withEmail(userEntity.getEmail())
+				.withEmail(user.getEmail())
 				.withPassword(encryptedPass)
 				.withSalt(salt)
-				.withFirstName(userEntity.getFirstName())
-				.withLastName(userEntity.getLastName())
-				.withRole(userEntity.getRole())
+				.withFirstName(user.getFirstName())
+				.withLastName(user.getLastName())
+				.withRole(UserEntity.Role.valueOf(user.getRole().name()))
 				.build();
 		userDao.save(newUserEntity);
 //		як варіант, id повертати?
-		return userEntity;
+		return user;
 	}
 
 	@Override

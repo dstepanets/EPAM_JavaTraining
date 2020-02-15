@@ -1,11 +1,11 @@
 package go.univer.controller.command;
 
-import go.univer.entity.users.UserEntity;
+import go.univer.domain.User;
 import go.univer.service.UserService;
+import go.univer.service.validator.ValidationException;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.util.Objects;
 
 public class RegisterCommand extends FrontCommand {
 	private final UserService userService;
@@ -16,30 +16,45 @@ public class RegisterCommand extends FrontCommand {
 
 	@Override
 	protected void processGet() throws ServletException, IOException {
+		req.getServletContext().setAttribute("registerError", false);
 		forward("views/register.jsp");
 	}
 
 	@Override
 	protected void processPost() throws ServletException, IOException {
-		//Session
-		final String email = (String) req.getAttribute("email");
-		final String firstName = (String) req.getAttribute("firstName");
-		final String lastName = (String) req.getAttribute("lastName");
-		final String password1 = (String) req.getAttribute("password1");
-		final String password2 = (String) req.getAttribute("password2");
+		req.getServletContext().setAttribute("registerError", false);
 
-		if (!Objects.equals(password1, password2)) {
-//			return "view/register.jsp";
+		//Session
+		final String email = req.getParameter("email");
+		final String firstName = req.getParameter("firstName");
+		final String lastName = req.getParameter("lastName");
+		final String password1 = req.getParameter("password1");
+		final String password2 = req.getParameter("password2");
+
+		if (!password1.equals(password2)) {
+			req.getServletContext().setAttribute("registerError", true);
+			req.getServletContext().setAttribute("exception", "Passwords doesn't match");
+			forward("views/register.jsp");
+			return;
 		}
 
-		final UserEntity userEntity = UserEntity.builder()
+		User user = User.builder()
 				.withEmail(email)
 				.withFirstName(firstName)
 				.withLastName(lastName)
 				.withPassword(password1)
+				.withRole(User.Role.STUDENT)
 				.build();
 
-		userService.register(userEntity);
+		try {
+			user = userService.register(user);
+			forward("views/login.jsp");
+		} catch (ValidationException e) {
+			req.getServletContext().setAttribute("registerError", true);
+			req.getServletContext().setAttribute("exception", e.getMessage());
+			forward("views/register.jsp");
+		}
+
 
 //		return "view/login.jsp";
 	}

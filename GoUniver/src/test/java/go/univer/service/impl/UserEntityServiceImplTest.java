@@ -1,7 +1,9 @@
 package go.univer.service.impl;
 
 import go.univer.dao.impl.UserDaoImpl;
+import go.univer.domain.User;
 import go.univer.entity.users.UserEntity;
+import go.univer.mapper.Mapper;
 import go.univer.service.PasswordEncryptor;
 import go.univer.service.validator.UserValidator;
 import go.univer.service.validator.ValidationException;
@@ -40,14 +42,23 @@ public class UserEntityServiceImplTest {
 	private static final String ENCODED_INCORRECT_PASSWORD = "AbraKadabraShwabra64654164";
 	public static final String SALT = "salt";
 
-	private static final UserEntity USER_ENTITY = UserEntity.builder()
+	private static final User USER = User.builder()
 			.withId(144)
 			.withEmail(EMAIL)
-			.withPassword(ENCODED_PASSWORD)
-			.withSalt(SALT)
+			.withPassword(PASSWORD)
 			.withFirstName("Petro")
 			.withLastName("Opudalo")
-			.withRole(UserEntity.Role.STUDENT)
+			.withRole(User.Role.STUDENT)
+			.build();
+
+	private static final UserEntity USER_ENTITY = UserEntity.builder()
+			.withId(USER.getId())
+			.withEmail(USER.getEmail())
+			.withPassword(ENCODED_PASSWORD)
+			.withSalt(SALT)
+			.withFirstName(USER.getFirstName())
+			.withLastName(USER.getLastName())
+			.withRole(UserEntity.Role.valueOf(USER.getRole().name()))
 			.build();
 
 	@Mock
@@ -58,6 +69,9 @@ public class UserEntityServiceImplTest {
 
 	@Mock
 	private PasswordEncryptor passwordEncryptor;
+
+	@Mock
+	private Mapper<UserEntity, User> userMapper;
 
 	@InjectMocks
 	private UserServiceImpl userService;
@@ -72,14 +86,14 @@ public class UserEntityServiceImplTest {
 
 	@Test
 	public void registrationSuccess() {
-		doNothing().when(userValidator).validate(any(UserEntity.class));
+		doNothing().when(userValidator).validate(any(User.class));
 		when(userDao.findByEmail(anyString())).thenReturn(Optional.empty());
 		doNothing().when(userDao).save(any(UserEntity.class));
 
-		final UserEntity actual = userService.register(USER_ENTITY);
-		assertEquals(USER_ENTITY, actual);
+		final User actual = userService.register(USER);
+		assertEquals(USER, actual);
 
-		verify(userValidator).validate(any(UserEntity.class));
+		verify(userValidator).validate(any(User.class));
 		verify(userDao).findByEmail(anyString());
 		verify(userDao).save(any(UserEntity.class));
 	}
@@ -87,40 +101,43 @@ public class UserEntityServiceImplTest {
 	@Test
 	public void registrationFailsBadEmail() {
 		expectedEx.expect(ValidationException.class);
-		final UserEntity userEntity = UserEntity.builder()
+		final User user = User.builder()
 				.withEmail(BAD_EMAIL)
 				.withPassword(PASSWORD)
 				.build();
-		doCallRealMethod().when(userValidator).validate(userEntity);
+		doCallRealMethod().when(userValidator).validate(user);
 //		doThrow(ValidateException.class).when(userValidator).validate(any(User.class));
-		userService.register(userEntity);
+		userService.register(user);
 	}
 
 	@Test
 	public void registrationFailsBadPassword() {
 		expectedEx.expect(ValidationException.class);
-		final UserEntity userEntity = UserEntity.builder()
+		final User user = User.builder()
 				.withEmail(EMAIL)
 				.withPassword(BAD_PASSWORD)
 				.build();
-		doCallRealMethod().when(userValidator).validate(userEntity);
-		userService.register(userEntity);
+		doCallRealMethod().when(userValidator).validate(user);
+		userService.register(user);
 	}
 
 	@Test
 	public void registrationFailsUserExists() {
 		expectedEx.expect(RuntimeException.class);
 		expectedEx.expectMessage("User with this email was registered already");
+
 		when(userDao.findByEmail(anyString())).thenReturn(Optional.of(USER_ENTITY));
-		userService.register(USER_ENTITY);
+		userService.register(USER);
 	}
 
 	@Test
 	public void logInSucceeds() {
 		when(passwordEncryptor.encrypt(eq(PASSWORD), eq(SALT))).thenReturn(ENCODED_PASSWORD);
 		when(userDao.findByEmail(anyString())).thenReturn(Optional.of(USER_ENTITY));
+		when(userMapper.mapEntityToDomain(any(UserEntity.class))).thenReturn(USER);
+//		doNothing().when(userValidator).validate(any(User.class));
 
-		final Optional<UserEntity> user = userService.login(EMAIL, PASSWORD);
+		final Optional<User> user = userService.login(EMAIL, PASSWORD);
 		assertTrue(user.isPresent());
 
 		verify(passwordEncryptor).encrypt(eq(PASSWORD), eq(SALT));
@@ -132,7 +149,7 @@ public class UserEntityServiceImplTest {
 		when(passwordEncryptor.encrypt(eq(PASSWORD), eq(SALT))).thenReturn(ENCODED_PASSWORD);
 		when(userDao.findByEmail(anyString())).thenReturn(Optional.empty());
 
-		final Optional<UserEntity> user = userService.login(EMAIL, PASSWORD);
+		final Optional<User> user = userService.login(EMAIL, PASSWORD);
 		assertFalse(user.isPresent());
 
 		verify(userDao).findByEmail(eq(EMAIL));
@@ -143,7 +160,7 @@ public class UserEntityServiceImplTest {
 		when(passwordEncryptor.encrypt(eq(INCORRECT_PASSWORD), eq(SALT))).thenReturn(ENCODED_INCORRECT_PASSWORD);
 		when(userDao.findByEmail(anyString())).thenReturn(Optional.of(USER_ENTITY));
 
-		final Optional<UserEntity> user = userService.login(EMAIL, INCORRECT_PASSWORD);
+		final Optional<User> user = userService.login(EMAIL, INCORRECT_PASSWORD);
 		assertFalse(user.isPresent());
 
 		verify(passwordEncryptor).encrypt(eq(INCORRECT_PASSWORD), eq(SALT));

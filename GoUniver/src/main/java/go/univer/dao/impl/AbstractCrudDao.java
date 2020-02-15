@@ -2,7 +2,6 @@ package go.univer.dao.impl;
 
 import go.univer.dao.CrudDao;
 import go.univer.dao.DBConnector;
-import go.univer.entity.users.UserEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -54,7 +53,7 @@ public abstract class AbstractCrudDao<E> implements CrudDao<E> {
 	}
 
 	protected <P> Optional<E> findByParam(P param, String findByParamQuery, BiConsumer<PreparedStatement, P> paramSetter) {
-		try (final Connection conn =  DBConnector.getConnection();
+		try (final Connection conn = DBConnector.getConnection();
 			 final PreparedStatement statement = conn.prepareStatement(findByParamQuery)) {
 			paramSetter.accept(statement, param);
 			try (final ResultSet resultSet = statement.executeQuery()) {
@@ -73,9 +72,8 @@ public abstract class AbstractCrudDao<E> implements CrudDao<E> {
 		try (final Connection conn = DBConnector.getConnection();
 			 final PreparedStatement statement = conn.prepareStatement(deleteByIdQuery)) {
 			statement.setInt(1, id);
-			try (final ResultSet resultSet = statement.executeQuery()) {
-				LOGGER.debug(String.format("Removing DB entry. Query: ['%s']", statement));
-			}
+			int ret = statement.executeUpdate();
+			LOGGER.debug(String.format("Removing DB entry. Query: ['%s'] Rows changed: %d", statement, ret));
 		} catch (SQLException e) {
 			LOGGER.error(String.format("[Failed query: '%s' id=%d] %s", deleteByIdQuery, id, e));
 		}
@@ -84,7 +82,7 @@ public abstract class AbstractCrudDao<E> implements CrudDao<E> {
 	@Override
 	public int count() {
 		try (final Connection conn = DBConnector.getConnection();
-			final PreparedStatement statement = conn.prepareStatement(countRowsQuery)) {
+			 final PreparedStatement statement = conn.prepareStatement(countRowsQuery)) {
 			try (final ResultSet resultSet = statement.executeQuery()) {
 				if (resultSet.next()) {
 					return resultSet.getInt(1);

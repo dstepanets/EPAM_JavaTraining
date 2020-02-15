@@ -1,6 +1,7 @@
 package go.univer;
 
 import go.univer.dao.impl.UserDaoImpl;
+import go.univer.domain.User;
 import go.univer.entity.users.UserEntity;
 import go.univer.injector.AppInjector;
 import go.univer.service.PasswordEncryptor;
@@ -43,23 +44,23 @@ public class Main {
 	}
 
 	private static void validationTest() {
-		UserEntity userEntity = UserEntity.builder()
+		User user = User.builder()
 				.withEmail("god@godmail.god")
 				.withPassword("Qwe!23")
 				.build();
-		USER_VALIDATOR.validate(userEntity);
+		USER_VALIDATOR.validate(user);
 	}
 
-	private static void setDefaultEncyptedPasswordsForInitialUsers() {
+/*	private static void setDefaultEncyptedPasswordsForInitialUsers() {
 		final String pass = "Qwe!23";
 		final String salt = "salt";
 
 		final String encryptedPass = ENCRYPTOR.encrypt(pass, salt);
 		USER_DAO.populateDefaultPasswords(encryptedPass);
-	}
+	}*/
 
 	private static void testLogin() {
-		Optional<UserEntity> user = USER_SERVICE.login("god@godmail.god", "Qwe!23");
+		Optional<User> user = USER_SERVICE.login("god@godmail.god", "Qwe!23");
 		if (user.isPresent()) {
 			System.out.println("\nLOGIN SUCCESS! " + user + "\n");
 		} else {

@@ -49,9 +49,8 @@ public class UserDaoImpl extends AbstractCrudDao<UserEntity> implements UserDao 
 			statement.setString(4, userEntity.getFirstName());
 			statement.setString(5, userEntity.getLastName());
 			statement.setInt(6, userEntity.getRole().ordinal());
-			try (final ResultSet resultSet = statement.executeQuery()) {
-				LOGGER.debug(String.format("Saving new user: %s", userEntity));
-			}
+			int ret = statement.executeUpdate();
+			LOGGER.debug(String.format("New user saved: %s", userEntity));
 		} catch (SQLException e) {
 			LOGGER.error(e);
 		}
@@ -89,9 +88,8 @@ public class UserDaoImpl extends AbstractCrudDao<UserEntity> implements UserDao 
 			statement.setString(5, userEntity.getLastName());
 			statement.setInt(6, userEntity.getRole().ordinal());
 			statement.setInt(7, userEntity.getId());
-			try (final ResultSet resultSet = statement.executeQuery()) {
-				LOGGER.debug(String.format("Executing user update query: ['%s']", statement));
-			}
+			int ret = statement.executeUpdate();
+			LOGGER.debug(String.format("User update query executed: ['%s'] Rows changed: %d", statement, ret));
 		} catch (SQLException e) {
 			LOGGER.error(e);
 		}
@@ -111,7 +109,7 @@ public class UserDaoImpl extends AbstractCrudDao<UserEntity> implements UserDao 
 
 
 	//	TODO tmp
-	public void populateDefaultPasswords(String encryptedPass) {
+/*	public void populateDefaultPasswords(String encryptedPass) {
 		final String sql = "UPDATE users SET password=?;";
 		try (final Connection conn = DBConnector.getConnection();
 			 final PreparedStatement statement = conn.prepareStatement(sql)) {
@@ -121,7 +119,7 @@ public class UserDaoImpl extends AbstractCrudDao<UserEntity> implements UserDao 
 		} catch (SQLException e) {
 			LOGGER.error(e);
 		}
-	}
+	}*/
 
 
 }

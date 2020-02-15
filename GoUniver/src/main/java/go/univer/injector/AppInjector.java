@@ -24,7 +24,7 @@ import java.util.Map;
 public class AppInjector {
 	private static final AppInjector INSTANCE = new AppInjector();
 
-	private static final Validator<UserEntity> USER_VALIDATOR = new UserValidator();
+	private static final Validator<User> USER_VALIDATOR = new UserValidator();
 	private static final PasswordEncryptor PASSWORD_ENCRYPTOR = new PasswordEncryptor();
 	private static final UserDao USER_REPOSITORY = new UserDaoImpl();
 	private static final Mapper<UserEntity, User> USER_MAPPER = new UserMapper();
