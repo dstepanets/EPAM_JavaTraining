@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,22 +18,23 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "user")
+@Builder
+@Entity
 @Table(name = "users")
+@DiscriminatorColumn(name="role_id")
 public class UserEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id")
+	@Column(name = "id", nullable = false, unique = true)
 	private Integer id;
-	@Column(name = "email")
+	@Column(name = "email", nullable = false, unique = true)
 	@Email(message = "*Please provide a valid Email")
 	@NotEmpty(message = "*Please provide an email")
 	private String email;
-	@Column(name = "password")
+	@Column(name = "password", nullable = false)
 	@Length(min = 5, message = "*Your password must have at least 5 characters")
 	@Pattern(regexp = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*+=]).{5,})",
 			message = "* Your password must have at least 1 char of each of these types: " +
@@ -42,13 +44,13 @@ public class UserEntity {
 	@Column(name = "salt")
 	@NotEmpty
 	private String salt;
-	@Column(name = "first_name")
+	@Column(name = "first_name", nullable = false)
 	@NotEmpty(message = "*Please provide your first name")
 	private String firstName;
-	@Column(name = "last_name")
+	@Column(name = "last_name", nullable = false)
 	@NotEmpty(message = "*Please provide your last name")
 	private String lastName;
-	@Column(name = "isadmin")
+	@Column(name = "role_id", nullable = false)
 	@NotEmpty(message = "*Please choose your role in the system")
 	private Role role;
 

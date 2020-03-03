@@ -2,20 +2,22 @@ package go.univer.mapper;
 
 import go.univer.domain.User;
 import go.univer.entity.users.UserEntity;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@Component
 public class UserMapper implements Mapper<UserEntity, User> {
 	@Override
 	public UserEntity mapDomainToEntity(User item) {
 		return item == null ? null :
 				UserEntity.builder()
-						.withId(item.getId())
-						.withEmail(item.getEmail())
-						.withPassword(item.getPassword())
-						.withRole(getUserRoleNullSafe(item))
-						.withFirstName(item.getFirstName())
-						.withLastName(item.getLastName())
+						.id(item.getId())
+						.email(item.getEmail())
+						.password(item.getPassword())
+						.role(getUserRoleNullSafe(item))
+						.firstName(item.getFirstName())
+						.lastName(item.getLastName())
 						.build();
 	}
 
@@ -28,12 +30,12 @@ public class UserMapper implements Mapper<UserEntity, User> {
 	public User mapEntityToDomain(UserEntity enity) {
 		return enity == null ? null :
 				User.builder()
-						.withId(enity.getId())
-						.withEmail(enity.getEmail())
-						.withPassword(enity.getPassword())
-						.withRole(getUserEntityRoleNullSafe(enity))
-						.withFirstName(enity.getFirstName())
-						.withLastName(enity.getLastName())
+						.id(enity.getId())
+						.email(enity.getEmail())
+						.password(enity.getPassword())
+						.role(getUserEntityRoleNullSafe(enity))
+						.firstName(enity.getFirstName())
+						.lastName(enity.getLastName())
 						.build();
 	}
 
