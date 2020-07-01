@@ -14,7 +14,7 @@
 		<compiler.version>3.6.1</compiler.version>
 		<junit.version>4.13</junit.version>
 		<mockito.version>2.10.0</mockito.version>
-		<log4j2.version>2.9.0</log4j2.version>
+		<log4j2.version>2.13.3</log4j2.version>
 		<slf4j.version>1.7.25</slf4j.version>
 		<mysql.version>8.0.19</mysql.version>
 		<hikari.version>3.4.2</hikari.version>
